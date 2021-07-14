@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String? validatePass(value) {
     if (value.isEmpty) {
-      return "Campo obrigatório";
+      return "Campo teste";
     } else {
       return null;
     }
