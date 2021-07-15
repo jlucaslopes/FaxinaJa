@@ -31,21 +31,58 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            getSquare(),
+            getLogo(),
+            getLoginSquare(),
           ],
         ),
       ),
     );
   }
 
-  Widget getSquare() {
+  Widget getLogo() {
+    var size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 40),
+            child: Container(
+              width: size.width - 60,
+              height: size.height * 0.4,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/back-logo.png"),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(20)),
+            )),
+        Padding(
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 40),
+            child: Container(
+              width: size.width - 60,
+              height: size.height * 0.4,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/cleaner-homepage.png"),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(20)),
+            )),
+        Column(
+          children: [
+            Text("Olá, bem vindo(a)"),
+            Text("ao FaxinaJá"),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget getLoginSquare() {
     var size = MediaQuery.of(context).size;
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
         child: Container(
           width: size.width - 60,
-          height: size.height * 0.5,
+          height: size.height * 0.4,
           decoration: BoxDecoration(
             color: Color.fromRGBO(227, 168, 255, 100),
             borderRadius: BorderRadius.circular(20),
@@ -118,7 +155,37 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: validate,
               child: Text("Login"),
-            )
+            ),
+            Row(
+              children: [
+                InkWell(
+                  child: Text("Registre-se "),
+                  onTap: () {
+                    print("Registre-se");
+                  },
+                ),
+                Text(
+                  "ou use as opções:",
+                  style: TextStyle(color: Colors.white),
+                ),
+                IconButton(
+                  iconSize: 25,
+                  icon: Icon(
+                    Icons.facebook,
+                    color: Colors.blueAccent,
+                  ),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  iconSize: 25,
+                  icon: Icon(
+                    Icons.facebook,
+                    color: Colors.blueAccent,
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ],
         ),
       ),
