@@ -51,25 +51,39 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/back-logo.png"),
-                      fit: BoxFit.cover),
+                      fit: BoxFit.none),
                   borderRadius: BorderRadius.circular(20)),
             )),
         Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30, top: 40),
+            padding: const EdgeInsets.only(left: 150, right: 30, top: 130),
             child: Container(
               width: size.width - 60,
               height: size.height * 0.4,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/cleaner-homepage.png"),
-                      fit: BoxFit.cover),
+                      fit: BoxFit.none),
                   borderRadius: BorderRadius.circular(20)),
             )),
-        Column(
-          children: [
-            Text("Olá, bem vindo(a)"),
-            Text("ao FaxinaJá"),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 80),
+          child: Column(
+            children: [
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Olá, bem vindo(a)",
+                    style: TextStyle(fontFamily: "Lalezar-Regular"),
+                  ),
+                ],
+              ),
+              Text("ao FaxinaJá",
+                  style: TextStyle(fontFamily: "Lalezar-Regular")),
+            ],
+          ),
         ),
       ],
     );
@@ -79,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     var size = MediaQuery.of(context).size;
     return Stack(children: [
       Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
         child: Container(
           width: size.width - 60,
           height: size.height * 0.4,
@@ -106,10 +120,9 @@ class _LoginPageState extends State<LoginPage> {
             Text(
               "Login",
               style: TextStyle(
-                color: Color.fromRGBO(109, 46, 139, 100),
-                fontSize: 25,
-                //USAR FONTE LALEZAR
-              ),
+                  color: Color.fromRGBO(109, 46, 139, 100),
+                  fontSize: 25,
+                  fontFamily: "Lalezar-Regular"),
             ),
             SizedBox(
               height: 20,
@@ -154,7 +167,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: validate,
-              child: Text("Login"),
+              child: Text(
+                "Login",
+                style: TextStyle(fontFamily: "Lalezar", color: Colors.white),
+              ),
             ),
             Row(
               children: [
