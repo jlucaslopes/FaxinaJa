@@ -1,4 +1,4 @@
-import 'package:faxina_ja_app/screens/loginPage.dart';
+import 'package:faxina_ja_app/screens/login/loginPage.dart';
 import 'package:flutter/material.dart';
 
 void main() {

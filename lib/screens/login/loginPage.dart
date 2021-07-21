@@ -1,3 +1,4 @@
+import 'package:faxina_ja_app/screens/login/cadastreJa.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -166,7 +167,12 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: validate,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CadastreJaScreen()),
+                );
+              },
               child: Text(
                 "Login",
                 style: TextStyle(fontFamily: "Lalezar", color: Colors.white),
