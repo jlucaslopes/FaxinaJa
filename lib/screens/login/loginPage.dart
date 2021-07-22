@@ -1,5 +1,6 @@
-import 'package:faxina_ja_app/screens/login/cadastreJa.dart';
 import 'package:flutter/material.dart';
+
+import 'cadastreJa.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -131,6 +132,8 @@ class _LoginPageState extends State<LoginPage> {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
+                  contentPadding: new EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
                   hintText: "Usuário",
                   fillColor: Colors.white,
                   filled: true,
@@ -156,6 +159,10 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.vpn_key),
+                fillColor: Colors.white,
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                filled: true,
                 hintText: 'Senha',
                 border: OutlineInputBorder(
                     borderRadius:
@@ -167,12 +174,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CadastreJaScreen()),
-                );
-              },
+              onPressed: () {},
               child: Text(
                 "Login",
                 style: TextStyle(fontFamily: "Lalezar", color: Colors.white),
@@ -183,7 +185,11 @@ class _LoginPageState extends State<LoginPage> {
                 InkWell(
                   child: Text("Registre-se "),
                   onTap: () {
-                    print("Registre-se");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CadastreJaScreen()),
+                    );
                   },
                 ),
                 Text(
