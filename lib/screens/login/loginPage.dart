@@ -170,8 +170,28 @@ class _LoginPageState extends State<LoginPage> {
               ),
               validator: validatePass,
             ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CadastreJaScreen()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    'Esqueceu sua senha?',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             ElevatedButton(
               onPressed: () {},

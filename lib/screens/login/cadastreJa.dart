@@ -18,18 +18,20 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color.fromRGBO(55, 10, 91, 100),
-      body: Column(
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 50, right: 50, top: 70, bottom: 80),
-            child: Text(
-              "Cadatre-se já FaxinaJa",
-              style: TextStyle(color: Colors.white),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 50, right: 50, top: 70, bottom: 80),
+              child: Text(
+                "Cadatre-se já FaxinaJa",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-          ),
-          getSquare(),
-        ],
+            getSquare(),
+          ],
+        ),
       ),
     );
   }
@@ -67,14 +69,14 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
               ),
             ),
           ),
-          inputTextField(null, null, "E-mail"),
-          inputTextField(null, null, "Confirme sua Senha"),
-          inputTextField(null, null, "Senha"),
+          inputTextField(null, null, "E-mail:"),
+          inputTextField(null, null, "Confirme sua Senha:"),
+          inputTextField(null, null, "Senha:"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(40),
+                padding: const EdgeInsets.all(30),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
@@ -91,7 +93,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(40),
+                padding: const EdgeInsets.all(30),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
@@ -116,31 +118,42 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
 }
 
 Widget inputTextField(bool? isPassword, TextInputType? inputType, String name) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 25),
-    child: TextFormField(
-      keyboardType: inputType == null ? TextInputType.name : inputType,
-      obscureText: isPassword == null ? false : isPassword,
-      decoration: InputDecoration(
-        hintText: name,
-        labelStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 15,
+  return Column(children: [
+    Padding(
+      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 3),
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: Text(
+          name,
+          style: TextStyle(color: Colors.white, fontSize: 12),
         ),
-        fillColor: Colors.white,
-        filled: true,
-        contentPadding:
-            new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       ),
-      validator: (value) {
-        if ("" == value) {
-          return "Required";
-        } else {
-          return null;
-        }
-      },
     ),
-  );
+    Padding(
+      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+      child: TextFormField(
+        keyboardType: inputType == null ? TextInputType.name : inputType,
+        obscureText: isPassword == null ? false : isPassword,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+          ),
+          fillColor: Colors.white,
+          filled: true,
+          contentPadding:
+              new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          border: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+        ),
+        validator: (value) {
+          if ("" == value) {
+            return "Required";
+          } else {
+            return null;
+          }
+        },
+      ),
+    )
+  ]);
 }
