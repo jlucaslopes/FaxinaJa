@@ -1,3 +1,4 @@
+import 'package:faxina_ja_app/screens/login/forgetPass.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastreJa.dart';
@@ -46,16 +47,18 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: [
         Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30, top: 40),
-            child: Container(
-              width: size.width - 60,
-              height: size.height * 0.4,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/back-logo.png"),
-                      fit: BoxFit.none),
-                  borderRadius: BorderRadius.circular(20)),
-            )),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 40),
+          child: Container(
+            width: size.width - 60,
+            height: size.height * 0.4,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/back-logo.png"),
+                  fit: BoxFit.none,
+                ),
+                borderRadius: BorderRadius.circular(20)),
+          ),
+        ),
         Padding(
             padding: const EdgeInsets.only(left: 150, right: 30, top: 130),
             child: Container(
@@ -78,12 +81,23 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     "Olá, bem vindo(a)",
-                    style: TextStyle(fontFamily: "Lalezar-Regular"),
+                    style: TextStyle(
+                        fontFamily: "Lexend-Deca",
+                        color: Color.fromRGBO(74, 30, 89, 1),
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              Text("ao FaxinaJá",
-                  style: TextStyle(fontFamily: "Lalezar-Regular")),
+              Align(
+                alignment: Alignment.center,
+                child: Text("ao FaxinaJá",
+                    style: TextStyle(
+                        fontFamily: "Lalezar",
+                        color: Colors.white,
+                        fontSize: 20)),
+              ),
             ],
           ),
         ),
@@ -124,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                   color: Color.fromRGBO(109, 46, 139, 100),
                   fontSize: 25,
-                  fontFamily: "Lalezar-Regular"),
+                  fontFamily: 'Lalezar'),
             ),
             SizedBox(
               height: 20,
@@ -174,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CadastreJaScreen()),
+                  MaterialPageRoute(builder: (context) => ForgetPassPage()),
                 );
               },
               child: Padding(

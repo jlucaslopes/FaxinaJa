@@ -42,7 +42,7 @@ flutter:
       fonts:
         - asset: assets/fontes/Lalezar-Regular.ttf
           style: normal
-    - family: Lalezar
+    - family: LexendDeca-Regular
       fonts:
         - asset: assets/fontes/LexendDeca-Regular.ttf
           style: normal
