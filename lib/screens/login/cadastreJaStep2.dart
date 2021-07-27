@@ -1,23 +1,29 @@
-import 'dart:ui';
-
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'cadastreJaStep2.dart';
+class CadastreJaStep2 extends StatefulWidget {
+  String email;
+  String pass;
 
-class CadastreJaScreen extends StatefulWidget {
-  const CadastreJaScreen({Key? key}) : super(key: key);
+  CadastreJaStep2({
+    required this.email,
+    required this.pass,
+  });
 
   @override
-  _CadastreJaScreenState createState() => _CadastreJaScreenState();
+  _CadastreJaStep2State createState() => _CadastreJaStep2State(email, pass);
 }
 
-class _CadastreJaScreenState extends State<CadastreJaScreen> {
+class _CadastreJaStep2State extends State<CadastreJaStep2> {
   final _form = GlobalKey<FormState>();
-  String _email = "";
-  String _pass = "";
-  String _confirmPass = "";
+
+  String _email;
+  String _pass;
+  _CadastreJaStep2State(this._email, this._pass);
+
+  String _nomeCompleto = "";
+  String _telefone = "";
+  late String _cpf;
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +69,14 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
       padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
       child: Stack(children: [
         SingleChildScrollView(
-          child: Container(
-            width: size.width - 60,
-            height: size.height * 0.65,
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(140, 96, 129, 100),
-              borderRadius: BorderRadius.circular(20),
+          child: LimitedBox(
+            maxWidth: size.width - 60,
+            maxHeight: size.height * 0.65,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(140, 96, 129, 100),
+                borderRadius: BorderRadius.circular(20),
+              ),
             ),
           ),
         ),
@@ -94,9 +102,9 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
               ),
             ),
           ),
-          inputEmailTextField(),
-          inputPassTextField(),
-          inputConfirmPassTextField(),
+          inputNameTextField(),
+          inputTelTextField(),
+          inputCPFTextField(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -125,13 +133,15 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                         Color.fromRGBO(21, 9, 9, 53)),
                   ),
                   onPressed: () {
-                    if (_form.currentState!.validate()) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CadastreJaStep2(email: _email, pass: _pass)));
-                    }
+                    //   if (_form.currentState!.validate()) {
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) =>
+                    //                 CadastreJaStep3(_email, _pass)));
+                    //   } else {
+                    //     print("Inválido");
+                    //   }
                   },
                   child: Text(
                     "Próximo",
@@ -147,7 +157,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
     );
   }
 
-  Widget inputEmailTextField() {
+  Widget inputNameTextField() {
     return Column(
       children: [
         Padding(
@@ -155,51 +165,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              "E-mail",
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
-          child: TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              onSaved: (value) {
-                _email = value!;
-              },
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(10.0))),
-              ),
-              validator: (value) {
-                _email = value!;
-                if (!EmailValidator.validate(value)) {
-                  return "E-mail inválido";
-                }
-              }),
-        ),
-      ],
-    );
-  }
-
-  Widget inputPassTextField() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 3),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "Senha",
+              "Nome Completo",
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),
@@ -223,22 +189,23 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
-                _pass = value!;
-                if (value.isEmpty) {
-                  _pass = "";
-                  return "Campo Obrigatório";
-                }
-                if (value != _pass) {
-                  _pass = "";
-                  return "Senhas nao coincidem";
-                }
+                // _confirmPass = value!;
+                // if (value.isEmpty) {
+                //   _confirmPass = "";
+                //   return "Campo Obrigatório";
+                // }
+                // if (value != _pass) {
+                //   _confirmPass = "";
+                //   return "Senhas nao coincidem";
+                // }
+                // _confirmPass = value;
               }),
         ),
       ],
     );
   }
 
-  Widget inputConfirmPassTextField() {
+  Widget inputTelTextField() {
     return Column(
       children: [
         Padding(
@@ -246,7 +213,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              "Confirme sua Senha",
+              "Telefone: ",
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),
@@ -270,19 +237,103 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
-                _confirmPass = value!;
-                if (value.isEmpty) {
-                  _confirmPass = "";
-                  return "Campo Obrigatório";
-                }
-                if (value != _pass) {
-                  _confirmPass = "";
-                  return "Senhas nao coincidem";
-                }
-                _confirmPass = value;
+                // _confirmPass = value!;
+                // if (value.isEmpty) {
+                //   _confirmPass = "";
+                //   return "Campo Obrigatório";
+                // }
+                // if (value != _pass) {
+                //   _confirmPass = "";
+                //   return "Senhas nao coincidem";
+                // }
+                // _confirmPass = value;
               }),
         ),
       ],
     );
   }
+
+  Widget inputCPFTextField() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 3),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              "Documento CPF: ",
+              style: TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+          child: TextFormField(
+              keyboardType: TextInputType.name,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                contentPadding:
+                    new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                border: OutlineInputBorder(
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(10.0))),
+              ),
+              validator: (value) {
+                _cpf = value!;
+                if (!CPFIsValid(value)) {
+                  _cpf = "";
+                  return "CPF Inválido";
+                }
+              }),
+        ),
+      ],
+    );
+  }
+}
+
+bool CPFIsValid(String cpf) {
+  if (cpf == null) return false;
+
+// Obter somente os números do CPF
+  var numeros = cpf.replaceAll(RegExp(r'[^0-9]'), '');
+
+// Testar se o CPF possui 11 dígitos
+  if (numeros.length != 11) return false;
+
+// Testar se todos os dígitos do CPF são iguais
+  if (RegExp(r'^(\d)\1*$').hasMatch(numeros)) return false;
+
+// Dividir dígitos
+  List<int> digitos =
+      numeros.split('').map((String d) => int.parse(d)).toList();
+
+// Calcular o primeiro dígito verificador
+  var calc_dv1 = 0;
+  for (var i in Iterable<int>.generate(9, (i) => 10 - i)) {
+    calc_dv1 += digitos[10 - i] * i;
+  }
+  calc_dv1 %= 11;
+  var dv1 = calc_dv1 < 2 ? 0 : 11 - calc_dv1;
+
+// Testar o primeiro dígito verificado
+  if (digitos[9] != dv1) return false;
+
+// Calcular o segundo dígito verificador
+  var calc_dv2 = 0;
+  for (var i in Iterable<int>.generate(10, (i) => 11 - i)) {
+    calc_dv2 += digitos[11 - i] * i;
+  }
+  calc_dv2 %= 11;
+  var dv2 = calc_dv2 < 2 ? 0 : 11 - calc_dv2;
+
+// Testar o segundo dígito verificador
+  if (digitos[10] != dv2) return false;
+
+  return true;
 }
