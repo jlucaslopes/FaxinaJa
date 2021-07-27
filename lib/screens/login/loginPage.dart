@@ -1,4 +1,5 @@
 import 'package:faxina_ja_app/screens/login/forgetPass.dart';
+import 'package:faxina_ja_app/screens/main/MainScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastreJa.dart';
@@ -208,7 +209,12 @@ class _LoginPageState extends State<LoginPage> {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreen()),
+                );
+              },
               child: Text(
                 "Login",
                 style: TextStyle(fontFamily: "Lalezar", color: Colors.white),
