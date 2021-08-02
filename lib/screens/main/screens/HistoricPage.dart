@@ -12,62 +12,100 @@ class _HistoricPageState extends State<HistoricPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(237, 205, 248, 100),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: Color.fromRGBO(237, 205, 248, 100),
+            Text(
+              "Veja o seu ",
+              style: TextStyle(
+                  fontSize: 20, color: Colors.white, fontFamily: 'Lalezar'),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 60),
-              child: Container(
+            Text(
+              "Histórico",
+              style: TextStyle(
+                  fontSize: 23, color: Colors.white, fontFamily: 'Lalezar'),
+            )
+          ],
+        ),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Color.fromRGBO(237, 205, 248, 100),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: Container(
                 width: size.width - 30,
-                height: size.height * 0.80,
+                height: size.height * 0.70,
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(97, 46, 109, 100),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Veja o seu ",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontFamily: 'Lalezar'),
+                child: Container(
+                  child: ListView(
+                    children: [
+                      ListTile(
+                        //dense: true,
+                        tileColor: Color.fromRGBO(253, 242, 232, 100),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.black,
                           ),
-                          Text(
-                            "Histórico",
-                            style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.white,
-                                fontFamily: 'Lalezar'),
-                          )
-                        ],
+                        ),
+                        title: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Maria Madalena",
+                                  style: TextStyle(
+                                    fontFamily: 'Lalezar',
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Row(children: [
+                                  Icon(Icons.star),
+                                  Text(
+                                    "4,8",
+                                    style: TextStyle(
+                                      fontFamily: 'Lalezar',
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                            Align(
+                              child: Text(
+                                "Faxineira",
+                                style:
+                                    TextStyle(fontSize: 12, color: Colors.grey),
+                              ),
+                              alignment: Alignment.topLeft,
+                            )
+                          ],
+                        ),
+                        subtitle: Column(),
+                        isThreeLine: true,
                       ),
-                    ),
-                    SingleChildScrollView(
-                      child: ListView(
-                        children: [
-                          ListTile(
-                            title: Text("Teste"),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                    ],
+                  ),
+                )
+                // ],
+                // ),
                 ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
