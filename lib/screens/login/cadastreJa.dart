@@ -33,7 +33,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Cadatre-se já ",
+                    "Cadastre-se no ",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Lalezar",
