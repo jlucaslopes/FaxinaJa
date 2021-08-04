@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 40),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 70),
           child: Container(
             width: size.width - 60,
             height: size.height * 0.4,
@@ -72,32 +72,42 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20)),
             )),
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 80),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
           child: Column(
             children: [
               SizedBox(
                 height: size.height * 0.05,
               ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Olá, bem vindo(a)",
+                  style: TextStyle(
+                      fontFamily: "Lexend-Deca",
+                      color: Color.fromRGBO(74, 30, 89, 1),
+                      fontStyle: FontStyle.normal,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
               Row(
                 children: [
-                  Text(
-                    "Olá, bem vindo(a)",
-                    style: TextStyle(
-                        fontFamily: "Lexend-Deca",
-                        color: Color.fromRGBO(74, 30, 89, 1),
-                        fontStyle: FontStyle.normal,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("ao FaxinaJá",
+                          style: TextStyle(
+                              fontFamily: "Lalezar",
+                              color: Colors.white,
+                              fontSize: 20)),
+                    ),
                   ),
                 ],
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text("ao FaxinaJá",
-                    style: TextStyle(
-                        fontFamily: "Lalezar",
-                        color: Colors.white,
-                        fontSize: 20)),
               ),
             ],
           ),
