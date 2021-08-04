@@ -40,64 +40,24 @@ class _HistoricPageState extends State<HistoricPage> {
             color: Color.fromRGBO(237, 205, 248, 100),
           ),
           Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(10),
             child: Container(
-                width: size.width - 30,
-                height: size.height * 0.70,
+                width: size.width,
+                height: size.height * 0.80,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(97, 46, 109, 100),
+                  color: Color.fromRGBO(97, 46, 109, 15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Container(
                   child: ListView(
                     children: [
-                      ListTile(
-                        //dense: true,
-                        tileColor: Color.fromRGBO(253, 242, 232, 100),
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.black,
-                          ),
-                        ),
-                        title: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Maria Madalena",
-                                  style: TextStyle(
-                                    fontFamily: 'Lalezar',
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Row(children: [
-                                  Icon(Icons.star),
-                                  Text(
-                                    "4,8",
-                                    style: TextStyle(
-                                      fontFamily: 'Lalezar',
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ]),
-                              ],
-                            ),
-                            Align(
-                              child: Text(
-                                "Faxineira",
-                                style:
-                                    TextStyle(fontSize: 12, color: Colors.grey),
-                              ),
-                              alignment: Alignment.topLeft,
-                            )
-                          ],
-                        ),
-                        subtitle: Column(),
-                        isThreeLine: true,
-                      ),
+                      buildListTile(),
+                      buildListTile(),
+                      buildListTile(),
+                      buildListTile(),
+                      buildListTile(),
+                      buildListTile(),
+                      buildListTile(),
                     ],
                   ),
                 )
@@ -109,4 +69,128 @@ class _HistoricPageState extends State<HistoricPage> {
       ),
     );
   }
+}
+
+Widget buildListTile() {
+  return Container(
+    margin: EdgeInsets.all(8),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      color: Colors.white,
+    ),
+    child: ListTile(
+      //dense: true,
+      isThreeLine: true,
+      selectedTileColor: Colors.white,
+      leading: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: Icon(
+          Icons.person,
+          color: Colors.black,
+        ),
+      ),
+      title: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Maria Madalena",
+                style: TextStyle(
+                  fontFamily: 'Lalezar',
+                  fontSize: 20,
+                ),
+              ),
+              Row(children: [
+                Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                Text(
+                  "4,8",
+                  style: TextStyle(
+                    fontFamily: 'Lalezar',
+                    fontSize: 18,
+                  ),
+                ),
+              ]),
+            ],
+          ),
+        ],
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Serviço: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  "Limpeza área interna da residência",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Valor: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  "R\$ 150,00",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Data da realização: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  "02/02/2021",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
