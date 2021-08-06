@@ -1,24 +1,24 @@
 import 'dart:ui';
 
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../registerProfessional/stepTwoProfessional.dart';
+import '../registerProfessional/stepThreeProfessional.dart';
 
-class CadastroProfessionalStepOne extends StatefulWidget {
-  const CadastroProfessionalStepOne({Key? key}) : super(key: key);
+class CadastroProfessionalStepTwo extends StatefulWidget {
+  const CadastroProfessionalStepTwo({Key? key}) : super(key: key);
 
   @override
-  _CadastroProfessionalStepOne createState() => _CadastroProfessionalStepOne();
+  _CadastroProfessionalStepTwo createState() => _CadastroProfessionalStepTwo();
 }
 
-class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
+class _CadastroProfessionalStepTwo extends State<CadastroProfessionalStepTwo> {
   final _form = GlobalKey<FormState>();
-  String _email = "";
-  String _phone = "";
-  String _name = "";
-  String _document = "";
+  String _cep = "";
+  String _estado = "";
+  String _cidade = "";
+  String _rua = "";
+  String _number = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Cadastre-se no ",
+                    "Cadastre seu ",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Lalezar",
                         fontSize: 20),
                   ),
                   Text(
-                    "FaxinaJa",
+                    "Endereço",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Lalezar",
@@ -65,7 +65,7 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
         child: Stack(fit: StackFit.loose, children: <Widget>[
           Container(
             child: Container(
-              constraints: BoxConstraints(minHeight: 575),
+              constraints: BoxConstraints(minHeight: 610),
               decoration: BoxDecoration(
                 color: Color.fromRGBO(93, 47, 108, 100),
                 borderRadius: BorderRadius.circular(20),
@@ -95,10 +95,11 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
               ),
             ),
           ),
-          inputEmailTextField(),
-          inputPhoneField(),
-          inputNameField(),
-          inputDocumentField(),
+          inputCepTextField(),
+          inputEstadoField(),
+          inputCidadeField(),
+          inputRuaField(),
+          inputNumeroField(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -120,12 +121,12 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                CadastroProfessionalStepTwo()),
+                                CadastroProfessionalStepThree()),
                       );
                     }
                   },
                   child: Text(
-                    "Continuar Cadastro",
+                    "Proximo Passo",
                     style: TextStyle(
                         fontFamily: "Lalezar",
                         color: Colors.white,
@@ -140,7 +141,7 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
     );
   }
 
-  Widget inputEmailTextField() {
+  Widget inputCepTextField() {
     return Column(
       children: [
         Padding(
@@ -148,7 +149,7 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              "E-mail:",
+              "Cep:",
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),
@@ -158,7 +159,7 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
           child: TextFormField(
               keyboardType: TextInputType.emailAddress,
               onSaved: (value) {
-                _email = value!;
+                _cep = value!;
               },
               decoration: InputDecoration(
                 labelStyle: TextStyle(
@@ -174,8 +175,8 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
-                _email = value!;
-                if (!EmailValidator.validate(value)) {
+                _cep = value!;
+                if (value.isEmpty) {
                   return "E-mail inválido";
                 }
               }),
@@ -184,14 +185,14 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
     );
   }
 
-  Widget inputPhoneField() {
+  Widget inputEstadoField() {
     return Column(children: [
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 3),
         child: Align(
           alignment: Alignment.bottomLeft,
           child: Text(
-            "Telefone:",
+            "Estado:",
             style: TextStyle(color: Colors.white, fontSize: 12),
           ),
         ),
@@ -199,39 +200,34 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
         child: TextFormField(
-            keyboardType: TextInputType.name,
-            obscureText: false,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-              ),
-              fillColor: Colors.white,
-              filled: true,
-              contentPadding:
-                  new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              border: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          keyboardType: TextInputType.name,
+          obscureText: false,
+          enabled: false,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
             ),
-            validator: (value) {
-              _phone = value!;
-              if (value.isEmpty) {
-                _phone = "";
-                return "Campo Obrigatorio";
-              }
-            }),
+            fillColor: Color.fromRGBO(106, 75, 117, 100),
+            filled: true,
+            contentPadding:
+                new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+            border: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          ),
+        ),
       ),
     ]);
   }
 
-  Widget inputNameField() {
+  Widget inputCidadeField() {
     return Column(children: [
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 3),
         child: Align(
           alignment: Alignment.bottomLeft,
           child: Text(
-            "Nome Completo:",
+            "Cidade:",
             style: TextStyle(color: Colors.white, fontSize: 12),
           ),
         ),
@@ -239,45 +235,75 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
         child: TextFormField(
-            keyboardType: TextInputType.name,
-            obscureText: false,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-              ),
-              fillColor: Colors.white,
-              filled: true,
-              contentPadding:
-                  new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              border: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          keyboardType: TextInputType.name,
+          obscureText: false,
+          enabled: false,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
             ),
-            validator: (value) {
-              _name = value!;
-              if (value.isEmpty) {
-                _name = "";
-                return "Campo Obrigatório";
-              }
-            }),
+            fillColor: Color.fromRGBO(106, 75, 117, 100),
+            filled: true,
+            contentPadding:
+                new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+            border: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          ),
+        ),
       ),
     ]);
   }
 
-  Widget inputDocumentField() {
+  Widget inputRuaField() {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 5),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            "Rua:",
+            style: TextStyle(color: Colors.white, fontSize: 12),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+        child: TextFormField(
+          keyboardType: TextInputType.name,
+          obscureText: false,
+          enabled: false,
+          decoration: InputDecoration(
+            labelStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+            ),
+            fillColor: Color.fromRGBO(106, 75, 117, 100),
+            filled: true,
+            contentPadding:
+                new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+            border: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget inputNumeroField() {
     return Column(children: [
       Padding(
         padding: const EdgeInsets.only(left: 30, right: 30, bottom: 1),
         child: Align(
           alignment: Alignment.bottomLeft,
           child: Text(
-            "Documento CPF/CNPJ:",
+            "Numero:",
             style: TextStyle(color: Colors.white, fontSize: 12),
           ),
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 1),
         child: TextFormField(
             keyboardType: TextInputType.name,
             obscureText: false,
@@ -294,9 +320,9 @@ class _CadastroProfessionalStepOne extends State<CadastroProfessionalStepOne> {
                   borderRadius: const BorderRadius.all(Radius.circular(10.0))),
             ),
             validator: (value) {
-              _document = value!;
+              _number = value!;
               if (value.isEmpty) {
-                _document = "";
+                _number = "";
                 return "Campo Obrigatório";
               }
             }),
