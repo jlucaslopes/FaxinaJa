@@ -3,6 +3,7 @@ import 'package:faxina_ja_app/screens/main/MainScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastreJa.dart';
+import 'choseprofiles.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -219,6 +220,16 @@ class _LoginPageState extends State<LoginPage> {
               height: 10,
             ),
             ElevatedButton(
+              style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all(Size.fromWidth(100)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  side: BorderSide(color: Colors.transparent),
+                )),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromRGBO(167, 34, 162, 100)),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -227,7 +238,8 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Text(
                 "Login",
-                style: TextStyle(fontFamily: "Lalezar", color: Colors.white),
+                style: TextStyle(
+                    fontFamily: "Lalezar", color: Colors.white, fontSize: 18),
               ),
             ),
             Row(
@@ -238,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CadastreJaScreen()),
+                          builder: (context) => ChoseProfileScreen()),
                     );
                   },
                 ),

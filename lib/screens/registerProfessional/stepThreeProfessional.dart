@@ -1,23 +1,23 @@
 import 'dart:ui';
 
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'cadastreJaStep2.dart';
+import '../login/loginPage.dart';
 
-class CadastreJaScreen extends StatefulWidget {
-  const CadastreJaScreen({Key? key}) : super(key: key);
+class CadastroProfessionalStepThree extends StatefulWidget {
+  const CadastroProfessionalStepThree({Key? key}) : super(key: key);
 
   @override
-  _CadastreJaScreenState createState() => _CadastreJaScreenState();
+  _CadastroProfessionalStepThree createState() =>
+      _CadastroProfessionalStepThree();
 }
 
-class _CadastreJaScreenState extends State<CadastreJaScreen> {
+class _CadastroProfessionalStepThree
+    extends State<CadastroProfessionalStepThree> {
   final _form = GlobalKey<FormState>();
-  String _email = "";
-  String _pass = "";
-  String _confirmPass = "";
+  String _senha = "";
+  String _confirmacao = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +28,19 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  left: 50, right: 50, top: 70, bottom: 50),
+                  left: 50, right: 50, top: 50, bottom: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Cadastre-se no ",
+                    "Cadastre sua ",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Lalezar",
                         fontSize: 20),
                   ),
                   Text(
-                    "FaxinaJa",
+                    "Senha",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Lalezar",
@@ -50,7 +50,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                 ],
               ),
             ),
-            getSquare(),
+            getSquare()
           ],
         ),
       ),
@@ -58,22 +58,22 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
   }
 
   Widget getSquare() {
-    var size = MediaQuery.of(context).size;
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-      child: Stack(children: [
-        SingleChildScrollView(
-          child: Container(
-            width: size.width - 60,
-            height: size.height * 0.65,
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(140, 96, 129, 100),
-              borderRadius: BorderRadius.circular(20),
+      child: Container(
+        child: Stack(fit: StackFit.loose, children: <Widget>[
+          Container(
+            child: Container(
+              constraints: BoxConstraints(minHeight: 460),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(93, 47, 108, 100),
+                borderRadius: BorderRadius.circular(20),
+              ),
             ),
           ),
-        ),
-        getForm()
-      ]),
+          getForm()
+        ]),
+      ),
     );
   }
 
@@ -81,10 +81,10 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
     return Form(
       key: _form,
       child: Column(
-        children: [
+        children: <Widget>[
           Padding(
             padding:
-                const EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 40),
+                const EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 10),
             child: Text(
               "Insira seus dados",
               style: TextStyle(
@@ -94,49 +94,38 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
               ),
             ),
           ),
-          inputEmailTextField(),
-          inputPassTextField(),
-          inputConfirmPassTextField(),
+          inputSenhaTextField(),
+          inputConfirmField(),
+          textEspecifications(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.all(20),
                 child: ElevatedButton(
                   style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(Size.fromWidth(200)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.transparent))),
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(255, 0, 0, 100)),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "Voltar",
-                    style:
-                        TextStyle(fontFamily: "Lalezar", color: Colors.white),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromRGBO(21, 9, 9, 53)),
+                        Color.fromRGBO(45, 19, 57, 100)),
                   ),
                   onPressed: () {
                     if (_form.currentState!.validate()) {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CadastreJaStep2(email: _email, pass: _pass)));
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
                     }
                   },
                   child: Text(
-                    "Próximo",
-                    style:
-                        TextStyle(fontFamily: "Lalezar", color: Colors.white),
+                    "Enviar Cadastro",
+                    style: TextStyle(
+                        fontFamily: "Lalezar",
+                        color: Colors.white,
+                        fontSize: 18),
                   ),
                 ),
               ),
@@ -147,7 +136,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
     );
   }
 
-  Widget inputEmailTextField() {
+  Widget inputSenhaTextField() {
     return Column(
       children: [
         Padding(
@@ -155,7 +144,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              "E-mail",
+              "Senha:",
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),
@@ -164,8 +153,9 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
           child: TextFormField(
               keyboardType: TextInputType.emailAddress,
+              obscureText: true,
               onSaved: (value) {
-                _email = value!;
+                _senha = value!;
               },
               decoration: InputDecoration(
                 labelStyle: TextStyle(
@@ -181,9 +171,9 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
-                _email = value!;
-                if (!EmailValidator.validate(value)) {
-                  return "E-mail inválido";
+                _senha = value!;
+                if (value.isEmpty) {
+                  return "Senha inválida";
                 }
               }),
         ),
@@ -191,7 +181,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
     );
   }
 
-  Widget inputPassTextField() {
+  Widget inputConfirmField() {
     return Column(
       children: [
         Padding(
@@ -199,7 +189,7 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              "Senha",
+              "Confirmacao de senha:",
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ),
@@ -207,8 +197,11 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
           child: TextFormField(
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.emailAddress,
               obscureText: true,
+              onSaved: (value) {
+                _confirmacao = value!;
+              },
               decoration: InputDecoration(
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -223,14 +216,9 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
-                _pass = value!;
-                if (value.isEmpty) {
-                  _pass = "";
-                  return "Campo Obrigatório";
-                }
-                if (value != _pass) {
-                  _pass = "";
-                  return "Senhas nao coincidem";
+                _confirmacao = value!;
+                if (_confirmacao.isEmpty || _confirmacao != _senha) {
+                  return "Senha incompativel ou vazia";
                 }
               }),
         ),
@@ -238,49 +226,21 @@ class _CadastreJaScreenState extends State<CadastreJaScreen> {
     );
   }
 
-  Widget inputConfirmPassTextField() {
+  Widget textEspecifications() {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 3),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "Confirme sua Senha",
-              style: TextStyle(color: Colors.white, fontSize: 12),
+          padding:
+              const EdgeInsets.only(left: 30, right: 30, top: 25, bottom: 10),
+          child: Text(
+            "Assim q sua solicitação de cadastro for enviada, \n passara por uma autenticação que vai validar os \n dados informados, você será notificado \n assim que a avaliação for concluída !",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: "Roboto",
+              color: Colors.white,
+              fontSize: 12,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
-          child: TextFormField(
-              keyboardType: TextInputType.name,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                contentPadding:
-                    new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(10.0))),
-              ),
-              validator: (value) {
-                _confirmPass = value!;
-                if (value.isEmpty) {
-                  _confirmPass = "";
-                  return "Campo Obrigatório";
-                }
-                if (value != _pass) {
-                  _confirmPass = "";
-                  return "Senhas nao coincidem";
-                }
-                _confirmPass = value;
-              }),
         ),
       ],
     );
