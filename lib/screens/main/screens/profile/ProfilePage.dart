@@ -14,59 +14,53 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
-        backgroundColor: Color.fromRGBO(237, 205, 248, 100),
+        backgroundColor: Color.fromRGBO(55, 10, 91, 100),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            buildProfilePic(),
-            SizedBox(height: 20),
-            ProfileMenu(
-              text: "Meu Perfil",
-              press: () => {
-                print("MyProfile"),
-                Navigator.pushNamed(context, "MyProfile")
-              },
-              icon: Icon(Icons.person),
-            ),
-            ProfileMenu(
-              text: "Notificações",
-              press: () => {},
-              icon: Icon(Icons.notifications),
-            ),
-            ProfileMenu(
-              text: "Sair",
-              press: () => {print("PopUntil"), Navigator.pop(context)},
-              icon: Icon(Icons.logout),
-            ),
-          ],
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: Color.fromRGBO(237, 205, 248, 100),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            children: [
+              buildProfilePic(),
+              SizedBox(height: 20),
+              ProfileMenu(
+                text: "Meu Perfil",
+                press: () => {
+                  print("MyProfile"),
+                  Navigator.pushNamed(context, "MyProfile")
+                },
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+              ),
+              ProfileMenu(
+                text: "Notificações",
+                press: () => {},
+                icon: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+              ),
+              ProfileMenu(
+                text: "Sair",
+                press: () => {print("PopUntil"), Navigator.pop(context)},
+                icon: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
-
-Widget buildProfileMenu(String text, String icon, VoidCallback press) {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-    child: FlatButton(
-      padding: EdgeInsets.all(20),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      color: Color(0xFFF5F6F9),
-      onPressed: press,
-      child: Row(
-        children: [
-          Image.asset("assets/mariamadalena.png"),
-          SizedBox(width: 20),
-          Expanded(child: Text(text)),
-          Icon(Icons.arrow_forward_ios),
-        ],
-      ),
-    ),
-  );
 }
 
 Widget buildProfilePic() {

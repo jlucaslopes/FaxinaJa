@@ -14,7 +14,7 @@ class _HistoricPageState extends State<HistoricPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(237, 205, 248, 100),
+        backgroundColor: Color.fromRGBO(55, 10, 91, 100),
         automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
