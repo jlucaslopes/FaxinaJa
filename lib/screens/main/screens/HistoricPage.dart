@@ -40,10 +40,10 @@ class _HistoricPageState extends State<HistoricPage> {
             color: Color.fromRGBO(237, 205, 248, 100),
           ),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
             child: Container(
                 width: size.width,
-                height: size.height * 0.80,
+                height: size.height * 0.9,
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(97, 46, 109, 15),
                   borderRadius: BorderRadius.circular(20),
@@ -51,13 +51,33 @@ class _HistoricPageState extends State<HistoricPage> {
                 child: Container(
                   child: ListView(
                     children: [
-                      buildListTile(),
-                      buildListTile(),
-                      buildListTile(),
-                      buildListTile(),
-                      buildListTile(),
-                      buildListTile(),
-                      buildListTile(),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
+                      buildListTile(
+                        image: AssetImage("assets/mariamadalena.png"),
+                      ),
                     ],
                   ),
                 )
@@ -71,7 +91,8 @@ class _HistoricPageState extends State<HistoricPage> {
   }
 }
 
-Widget buildListTile() {
+Widget buildListTile({required ImageProvider image}) {
+  final double avatarSize = 50;
   return Container(
     margin: EdgeInsets.all(8),
     decoration: BoxDecoration(
@@ -82,11 +103,13 @@ Widget buildListTile() {
       //dense: true,
       isThreeLine: true,
       selectedTileColor: Colors.white,
-      leading: CircleAvatar(
-        backgroundColor: Colors.white,
-        child: Icon(
-          Icons.person,
-          color: Colors.black,
+      leading: Container(
+        width: avatarSize,
+        height: avatarSize,
+        child: CircleAvatar(
+          minRadius: 12,
+          maxRadius: 40,
+          backgroundImage: image,
         ),
       ),
       title: Column(

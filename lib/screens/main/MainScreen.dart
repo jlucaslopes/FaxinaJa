@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/HistoricPage.dart';
 import 'screens/OrderPage.dart';
-import 'screens/ProfilePage.dart';
+import 'screens/profile/ProfilePage.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
