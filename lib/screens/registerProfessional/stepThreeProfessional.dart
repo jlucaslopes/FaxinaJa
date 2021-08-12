@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../login/loginPage.dart';
+import '../dashboardProfessional/servicesHistoric.dart';
 
 class CadastroProfessionalStepThree extends StatefulWidget {
   const CadastroProfessionalStepThree({Key? key}) : super(key: key);
@@ -116,7 +116,8 @@ class _CadastroProfessionalStepThree
                     if (_form.currentState!.validate()) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => ServicesHistoricPage()),
                       );
                     }
                   },
