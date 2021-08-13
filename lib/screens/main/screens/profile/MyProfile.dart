@@ -20,9 +20,9 @@ class _MyProfileState extends State<MyProfile> {
         centerTitle: true,
         title: Text(
           "Meu Perfil",
-          style: TextStyle(color: Color.fromRGBO(59, 12, 79, 10)),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color.fromRGBO(237, 205, 248, 100),
+        backgroundColor: Color.fromRGBO(55, 10, 91, 01),
         automaticallyImplyLeading: false,
       ),
       body: Container(
@@ -36,8 +36,11 @@ class _MyProfileState extends State<MyProfile> {
               SizedBox(
                 height: 30,
               ),
-              buildTextField("teste", "teste", false),
-              buildTextField("teste", "teste", true),
+              buildTextField("Nome Completo", "nome", false),
+              buildTextField("Senha", "senha", true),
+              buildTextField("Telefone", "telefone", false),
+              buildTextField("Documento", "CPF/CNPJ", false),
+              buildTextField("Data Nascimento", "__/__/__", false),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -100,7 +103,8 @@ class _MyProfileState extends State<MyProfile> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: placeHolder,
           hintStyle: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+            color: Colors.grey,
+          ),
         ),
       ),
     );
