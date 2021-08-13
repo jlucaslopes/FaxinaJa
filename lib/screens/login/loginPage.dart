@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'cadastreJa.dart';
 import 'choseprofiles.dart';
+import '../dashboardProfessional/servicesHistoric.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -273,7 +274,13 @@ class _LoginPageState extends State<LoginPage> {
                     Icons.facebook,
                     color: Colors.blueAccent,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ServicesHistoricPage()),
+                    );
+                  },
                 ),
               ],
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './professionalProfile/professionalProfile.dart';
+
 class ServicesHistoricPage extends StatefulWidget {
   const ServicesHistoricPage({Key? key}) : super(key: key);
 
@@ -8,6 +10,14 @@ class ServicesHistoricPage extends StatefulWidget {
 }
 
 class _ServicesHistoricPageState extends State<ServicesHistoricPage> {
+  int currentTab = 0;
+  final List<Widget> screens = [
+    ServicesHistoricPage(),
+    ProfessionalProfilePage(),
+  ];
+
+  final PageStorageBucket bucket = PageStorageBucket();
+  Widget currentScreen = ServicesHistoricPage();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -21,9 +31,9 @@ class _ServicesHistoricPageState extends State<ServicesHistoricPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "FaxinaJa",
+              "FaxinaJá",
               style: TextStyle(
-                  fontSize: 23, color: Colors.white, fontFamily: 'Lalezar'),
+                  fontSize: 28, color: Colors.white, fontFamily: 'Lalezar'),
             ),
           ],
         ),
@@ -41,24 +51,21 @@ class _ServicesHistoricPageState extends State<ServicesHistoricPage> {
                 width: size.width,
                 height: size.height * 0.7,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(97, 46, 109, 15),
+                  color: Color.fromRGBO(55, 10, 91, 30),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Container(
-                  margin: EdgeInsets.all(3),
+                  margin: EdgeInsets.all(10),
                   child: ListView(
                     children: [
-                      Padding(padding: const EdgeInsets.only(top: 20)),
+                      Padding(padding: const EdgeInsets.only(top: 10)),
                       Text(
-                        "Historico de Servicos ",
+                        "Histórico de Serviços ",
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: "Lalezar",
-                            fontSize: 20),
+                            fontSize: 24),
                         textAlign: TextAlign.center,
-                      ),
-                      buildListTile(
-                        image: AssetImage("assets/mariamadalena.png"),
                       ),
                       buildListTile(
                         image: AssetImage("assets/mariamadalena.png"),
@@ -87,56 +94,132 @@ class _ServicesHistoricPageState extends State<ServicesHistoricPage> {
           ),
         ],
       ),
+      floatingActionButton: Container(
+        height: 70.0,
+        width: 70.0,
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.search,
+            size: 30,
+            color: Colors.white,
+          ),
+          backgroundColor: Color.fromRGBO(55, 10, 91, 1),
+          elevation: 20,
+          isExtended: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+              side: BorderSide(color: Colors.white, width: 1)),
+          onPressed: () {
+            setState(() {});
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Color.fromRGBO(55, 10, 91, 01),
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          color: Colors.transparent,
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MaterialButton(
+                    minWidth: 150,
+                    onPressed: () {
+                      setState(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfessionalProfilePage()),
+                        );
+                        currentScreen = ProfessionalProfilePage();
+                        currentTab = 3;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Perfil",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MaterialButton(
+                    minWidth: 150,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = ServicesHistoricPage();
+                        currentTab = 0;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.history,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Meus Serviços",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
 Widget buildListTile({required ImageProvider image}) {
-  final double avatarSize = 50;
   return Container(
     margin: EdgeInsets.all(7),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      color: Colors.white,
+      color: Color.fromRGBO(252, 255, 240, 1),
     ),
     child: ListTile(
       //dense: true,
       isThreeLine: true,
       selectedTileColor: Colors.white,
-      leading: Container(
-        width: avatarSize,
-        height: avatarSize,
-        child: CircleAvatar(
-          minRadius: 12,
-          maxRadius: 40,
-          backgroundImage: image,
-        ),
-      ),
+
       title: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Maria Madalena",
+                "Limpeza Residencial",
                 style: TextStyle(
                   fontFamily: 'Lalezar',
                   fontSize: 20,
                 ),
               ),
-              Row(children: [
-                Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                Text(
-                  "4,8",
-                  style: TextStyle(
-                    fontFamily: 'Lalezar',
-                    fontSize: 18,
-                  ),
-                ),
-              ]),
             ],
           ),
         ],
@@ -145,6 +228,50 @@ Widget buildListTile({required ImageProvider image}) {
         padding: const EdgeInsets.only(bottom: 10),
         child: Column(
           children: [
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Cliente: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  "Ana Claudia",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Endereço: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  "Rua Fagundes Teixeira, 26",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
             Row(
               children: [
                 Align(
@@ -172,7 +299,7 @@ Widget buildListTile({required ImageProvider image}) {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Valor: ",
+                    "Valor recebido: ",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
@@ -204,6 +331,28 @@ Widget buildListTile({required ImageProvider image}) {
                 ),
                 Text(
                   "02/02/2021",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Data do pagamento: ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  "12/02/2021",
                   style: TextStyle(
                     fontSize: 13,
                     color: Colors.grey,
