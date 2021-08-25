@@ -174,7 +174,7 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
           child: TextFormField(
               keyboardType: TextInputType.name,
-              obscureText: true,
+              obscureText: false,
               decoration: InputDecoration(
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -222,7 +222,7 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
           child: TextFormField(
               keyboardType: TextInputType.name,
-              obscureText: true,
+              obscureText: false,
               decoration: InputDecoration(
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -270,7 +270,7 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
           child: TextFormField(
               keyboardType: TextInputType.name,
-              obscureText: true,
+              obscureText: false,
               decoration: InputDecoration(
                 labelStyle: TextStyle(
                   color: Colors.black,

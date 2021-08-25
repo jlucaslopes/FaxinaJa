@@ -1,3 +1,4 @@
+import 'package:faxina_ja_app/models/login.dart';
 import 'package:faxina_ja_app/screens/login/forgetPass.dart';
 import 'package:faxina_ja_app/screens/main/MainScreen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _form = GlobalKey<FormState>();
 
+  AuthObject authObject = new AuthObject();
+
   void validate() {
     if (!_form.currentState!.validate()) {
       print("Invalido");
@@ -26,6 +29,17 @@ class _LoginPageState extends State<LoginPage> {
     if (value.isEmpty) {
       return "Campo teste";
     } else {
+      authObject.password = value.toString();
+      return null;
+    }
+  }
+
+  String? validateUser(value) {
+    if ("" == value) {
+      return "Required";
+    } else {
+      authObject.user = value.toString();
+
       return null;
     }
   }
@@ -172,13 +186,7 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (text) {
                 print(text);
               },
-              validator: (value) {
-                if ("" == value) {
-                  return "Required";
-                } else {
-                  return null;
-                }
-              },
+              validator: validateUser,
             ),
             SizedBox(
               height: 10,
@@ -233,10 +241,15 @@ class _LoginPageState extends State<LoginPage> {
                     Color.fromRGBO(167, 34, 162, 100)),
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainScreen()),
-                );
+                if (_form.currentState!.validate()) {
+                  print(authObject.password);
+                  print(authObject.user);
+                }
+
+                //Navigator.push(
+                //  context,
+                //  MaterialPageRoute(builder: (context) => MainScreen()),
+                //);
               },
               child: Text(
                 "Login",

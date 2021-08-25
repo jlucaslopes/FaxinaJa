@@ -1,4 +1,4 @@
 class AuthObject {
-  late String user;
-  late String password;
+  late String user = "";
+  late String password = "";
 }
