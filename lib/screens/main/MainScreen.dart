@@ -1,3 +1,4 @@
+import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/HistoricPage.dart';
@@ -5,8 +6,8 @@ import 'screens/order/OrderPage.dart';
 import 'screens/profile/ProfilePage.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
-
+  const MainScreen({Key? key, required this.token}) : super(key: key);
+  final LoginToken token;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -24,6 +25,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.token.token.toString());
     return Scaffold(
       body: PageStorage(
         bucket: bucket,

@@ -17,19 +17,26 @@ class _OrderPageState extends State<OrderPage> {
     "Apenas Area Externa"
   ];
 
-  List formaPagamento = ["Cartão 1", "Dinheiro", "Pix", "Mais um"];
+  List formaPagamento = ["Cartão 1", "Dinheiro", "Pix"];
 
   DateTime _dateTime = DateTime.now();
 
   bool geladeira = false;
   bool compras = false;
   bool cortinas = false;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     String tipoServicoEscolhido = tipoServico[0];
     String formaPagamentoEscolhido = formaPagamento[0];
+    var geladeiraWidget =
+        ExtraWidget(img: "fridge", name: "Geladeira", isSelected: geladeira);
+    var comprasWidget =
+        ExtraWidget(img: "organise", name: "Compras", isSelected: compras);
+    var cortinasWidget =
+        ExtraWidget(img: "blind", name: "Cortinas", isSelected: cortinas);
 
     return Scaffold(
       appBar: AppBar(
@@ -124,12 +131,17 @@ class _OrderPageState extends State<OrderPage> {
                                             hint: Text("Tipo de serviço"),
                                             dropdownColor: Colors.white,
                                             icon: Icon(Icons.arrow_drop_down),
-                                            value: tipoServico[0],
+                                            value: tipoServicoEscolhido,
                                             onChanged: (newValue) {
                                               setState(() {
                                                 tipoServicoEscolhido =
                                                     newValue.toString();
                                               });
+                                              print(tipoServicoEscolhido);
+                                            },
+                                            onTap: () {
+                                              setState(() {});
+                                              print(tipoServicoEscolhido);
                                             },
                                             items: tipoServico.map((valueItem) {
                                               return DropdownMenuItem(
@@ -186,12 +198,11 @@ class _OrderPageState extends State<OrderPage> {
                                             hint: Text("Forma de pagamento"),
                                             dropdownColor: Colors.white,
                                             icon: Icon(Icons.arrow_drop_down),
-                                            value: formaPagamento[0],
+                                            value: formaPagamentoEscolhido,
                                             onChanged: (newValue) {
-                                              setState(() {
-                                                formaPagamentoEscolhido =
-                                                    newValue.toString();
-                                              });
+                                              formaPagamentoEscolhido =
+                                                  newValue.toString();
+                                              setState(() {});
                                             },
                                             items:
                                                 formaPagamento.map((valueItem) {
@@ -233,7 +244,7 @@ class _OrderPageState extends State<OrderPage> {
                             context: context,
                             initialDate: DateTime.now(),
                             firstDate: DateTime.now(),
-                            lastDate: DateTime(2022),
+                            lastDate: DateTime(DateTime.now().year + 2),
                           ).then((date) => {
                                 setState(() {
                                   _dateTime = date!;
@@ -262,18 +273,9 @@ class _OrderPageState extends State<OrderPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ExtraWidget(
-                            img: "fridge",
-                            name: "Geladeira",
-                            isSelected: geladeira),
-                        ExtraWidget(
-                            img: "organise",
-                            name: "Compras",
-                            isSelected: compras),
-                        ExtraWidget(
-                            img: "blind",
-                            name: "Cortinas",
-                            isSelected: cortinas),
+                        geladeiraWidget,
+                        comprasWidget,
+                        cortinasWidget,
                       ],
                     ),
                     Padding(
@@ -292,8 +294,17 @@ class _OrderPageState extends State<OrderPage> {
                               Color.fromRGBO(167, 34, 162, 100)),
                         ),
                         onPressed: () {
+                          print("geladeira " +
+                              geladeiraWidget.isSelected.toString());
+                          print(
+                              "compras " + comprasWidget.isSelected.toString());
+                          print("cortinas " +
+                              cortinasWidget.isSelected.toString());
+                          print(tipoServicoEscolhido);
+                          print(formaPagamentoEscolhido);
+                          print(_dateTime.toString());
                           //Enviar o pedido
-                          Navigator.of(context).pop();
+                          // Navigator.of(context).pop();
                         },
                         child: Text(
                           "Realizar o pedido",

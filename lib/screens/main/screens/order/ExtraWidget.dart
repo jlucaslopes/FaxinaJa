@@ -32,9 +32,7 @@ class _ExtraWidgetState extends State<ExtraWidget> {
         FloatingActionButton(
           onPressed: () {
             setState(() {
-              print("Geladeira pressionada");
               widget.isSelected = !(widget.isSelected);
-              print(widget.isSelected);
             });
           },
           backgroundColor: Colors.transparent,

@@ -1,9 +1,10 @@
-import 'package:faxina_ja_app/models/login.dart';
+import 'package:faxina_ja_app/models/AuthObject.dart';
+import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:faxina_ja_app/screens/login/forgetPass.dart';
 import 'package:faxina_ja_app/screens/main/MainScreen.dart';
+import 'package:faxina_ja_app/services/authService.dart';
 import 'package:flutter/material.dart';
 
-import 'cadastreJa.dart';
 import 'choseprofiles.dart';
 import '../dashboardProfessional/servicesHistoric.dart';
 
@@ -16,8 +17,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _form = GlobalKey<FormState>();
+  final authService = new AuthService();
 
-  AuthObject authObject = new AuthObject();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _senhaController = TextEditingController();
+
+  bool senhaIncorreta = false;
+
+  AuthObject authObject = new AuthObject("", "");
 
   void validate() {
     if (!_form.currentState!.validate()) {
@@ -27,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String? validatePass(value) {
     if (value.isEmpty) {
-      return "Campo teste";
+      return "Campo obrigatório";
     } else {
       authObject.password = value.toString();
       return null;
@@ -36,9 +43,9 @@ class _LoginPageState extends State<LoginPage> {
 
   String? validateUser(value) {
     if ("" == value) {
-      return "Required";
+      return "Campo obrigatório";
     } else {
-      authObject.user = value.toString();
+      authObject.email = value.toString();
 
       return null;
     }
@@ -172,6 +179,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             TextFormField(
+              controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                   contentPadding: new EdgeInsets.symmetric(
@@ -183,15 +191,13 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20.0))),
                   prefixIcon: Icon(Icons.person)),
-              onChanged: (text) {
-                print(text);
-              },
               validator: validateUser,
             ),
             SizedBox(
               height: 10,
             ),
             TextFormField(
+              controller: _senhaController,
               obscureText: true,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.vpn_key),
@@ -206,25 +212,42 @@ class _LoginPageState extends State<LoginPage> {
               ),
               validator: validatePass,
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ForgetPassPage()),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'Esqueceu sua senha?',
-                    style: TextStyle(
-                      color: Colors.white,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Senha Incorreta',
+                      style: TextStyle(
+                        color: senhaIncorreta ? Colors.red : Colors.transparent,
+                      ),
                     ),
                   ),
                 ),
-              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ForgetPassPage()),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        'Esqueceu sua senha?',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 10,
@@ -240,16 +263,23 @@ class _LoginPageState extends State<LoginPage> {
                 backgroundColor: MaterialStateProperty.all<Color>(
                     Color.fromRGBO(167, 34, 162, 100)),
               ),
-              onPressed: () {
+              onPressed: () async {
+                print(_emailController.text);
+                print(_senhaController.text);
                 if (_form.currentState!.validate()) {
-                  print(authObject.password);
-                  print(authObject.user);
+                  var token = await authService.login(
+                      _emailController.text, _senhaController.text);
+                  if (token.isNotEmpty) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              MainScreen(token: new LoginToken(token: token))),
+                    );
+                  } else {
+                    senhaIncorreta = !senhaIncorreta;
+                  }
                 }
-
-                //Navigator.push(
-                //  context,
-                //  MaterialPageRoute(builder: (context) => MainScreen()),
-                //);
               },
               child: Text(
                 "Login",
