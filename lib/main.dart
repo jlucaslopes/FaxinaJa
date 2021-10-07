@@ -1,6 +1,4 @@
 import 'package:faxina_ja_app/screens/login/loginPage.dart';
-import 'package:faxina_ja_app/screens/main/MainScreen.dart';
-import 'package:faxina_ja_app/screens/main/screens/profile/MyProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,7 +19,6 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           'LoginPage': (context) => LoginPage(),
-          'MyProfile': (context) => MyProfile(),
         },
         showSemanticsDebugger: false,
         home: LoginPage());

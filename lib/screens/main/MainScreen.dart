@@ -14,18 +14,15 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentTab = 0;
-  final List<Widget> screens = [
-    HistoricPage(),
-    OrderPage(),
-    ProfilePage(),
-  ];
+
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = HistoricPage();
 
+
   @override
   Widget build(BuildContext context) {
-    print(widget.token.token.toString());
+
     return Scaffold(
       body: PageStorage(
         bucket: bucket,
@@ -48,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
               side: BorderSide(color: Colors.black, width: 2)),
           onPressed: () {
             setState(() {
-              currentScreen = OrderPage();
+              currentScreen = OrderPage(token: widget.token,);
               currentTab = 2;
             });
           },
@@ -101,7 +98,7 @@ class _MainScreenState extends State<MainScreen> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = ProfilePage();
+                        currentScreen = ProfilePage(token: widget.token,);
                         currentTab = 3;
                       });
                     },
@@ -129,4 +126,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+
 }

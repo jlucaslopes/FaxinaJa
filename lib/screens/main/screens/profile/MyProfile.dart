@@ -1,20 +1,31 @@
+import 'package:faxina_ja_app/models/LoginToken.dart';
+import 'package:faxina_ja_app/models/UserInfo.dart';
+import 'package:faxina_ja_app/services/ProfileService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/ProfilePic.dart';
 
 class MyProfile extends StatefulWidget {
-  const MyProfile({Key? key}) : super(key: key);
+  const MyProfile({Key? key,  required this.token}) : super(key: key);
 
+  final LoginToken? token;
   @override
   _MyProfileState createState() => _MyProfileState();
 }
 
 class _MyProfileState extends State<MyProfile> {
   bool isObscurePassword = true;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -30,57 +41,73 @@ class _MyProfileState extends State<MyProfile> {
         color: Color.fromRGBO(237, 205, 248, 100),
         padding: EdgeInsets.only(left: 15, top: 20, right: 15),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ProfilePic(),
-              SizedBox(
-                height: 30,
-              ),
-              buildTextField("Nome Completo", "nome", false),
-              buildTextField("Senha", "senha", true),
-              buildTextField("Telefone", "telefone", false),
-              buildTextField("Documento", "CPF/CNPJ", false),
-              buildTextField("Data Nascimento", "__/__/__", false),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "CANCELAR",
-                      style: TextStyle(
-                          fontSize: 13, letterSpacing: 2, color: Colors.black),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(59, 12, 79, 100),
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      "SALVAR",
-                      style: TextStyle(
-                          fontSize: 13, letterSpacing: 2, color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(59, 12, 79, 10),
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                  )
-                ],
-              )
-            ],
-          ),
+          child: FutureBuilder<UserInfo>(
+            future: new ProfileService().findUser(widget.token!.token),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return buildScreen(snapshot.data, context);
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          )
+
+              //buildScreen()
         ),
       ),
     );
   }
 
+  Widget buildScreen(UserInfo? userInfo, BuildContext context){
+  return Column(
+    children: [
+      ProfilePic(),
+      SizedBox(
+        height: 30,
+      ),
+      buildTextField("Nome Completo",userInfo!.name , false),
+      buildTextField("Senha", userInfo.password, true),
+      buildTextField("Email", userInfo.email, false),
+      buildTextField("Documento", userInfo.document, false),
+      //buildTextField("Data Nascimento", "__/__/__", false),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "CANCELAR",
+              style: TextStyle(
+                  fontSize: 13, letterSpacing: 2, color: Colors.black),
+            ),
+            style: OutlinedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(59, 12, 79, 100),
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text(
+              "SALVAR",
+              style: TextStyle(
+                  fontSize: 13, letterSpacing: 2, color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+                primary: Color.fromRGBO(59, 12, 79, 10),
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+          )
+        ],
+      )
+    ],
+  );
+  }
   Widget buildTextField(
       String labelText, String placeHolder, bool isPasswordTextField) {
     return Padding(
@@ -109,4 +136,5 @@ class _MyProfileState extends State<MyProfile> {
       ),
     );
   }
+
 }

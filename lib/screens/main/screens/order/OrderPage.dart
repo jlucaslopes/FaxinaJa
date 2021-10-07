@@ -1,10 +1,16 @@
+import 'package:faxina_ja_app/models/LoginToken.dart';
+import 'package:faxina_ja_app/models/OrderRequest.dart';
+import 'package:faxina_ja_app/services/OrderService.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'ExtraWidget.dart';
 
 class OrderPage extends StatefulWidget {
-  const OrderPage({Key? key}) : super(key: key);
+  const OrderPage({Key? key, required this.token}) : super(key: key);
 
+  final LoginToken? token;
   @override
   _OrderPageState createState() => _OrderPageState();
 }
@@ -293,18 +299,26 @@ class _OrderPageState extends State<OrderPage> {
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Color.fromRGBO(167, 34, 162, 100)),
                         ),
-                        onPressed: () {
-                          print("geladeira " +
-                              geladeiraWidget.isSelected.toString());
-                          print(
-                              "compras " + comprasWidget.isSelected.toString());
-                          print("cortinas " +
-                              cortinasWidget.isSelected.toString());
-                          print(tipoServicoEscolhido);
-                          print(formaPagamentoEscolhido);
+                        onPressed: () async {
+                          Placemark currentPosition = await getCurrentPosition();
+                          OrderRequest order = new OrderRequest(status: "ABERTO",
+                              clientId: widget.token!.token,
+                              professionalId: "",
+                              serviceType: tipoServicoEscolhido,
+                              serviceValue: 0,
+                              address: new Address(street: currentPosition.street.toString() ,
+                                  number: int.parse(currentPosition.name.toString()),
+                                  city: currentPosition.locality.toString(),
+                                  state: currentPosition.administrativeArea.toString(),
+                                  country: currentPosition.country.toString(),
+                                  zipCode: currentPosition.postalCode.toString()
+                                  , region: currentPosition.country.toString()));
+
                           print(_dateTime.toString());
+                          new OrderService().createDemand(order, widget.token!.token );
                           //Enviar o pedido
                           // Navigator.of(context).pop();
+
                         },
                         child: Text(
                           "Realizar o pedido",
@@ -323,5 +337,13 @@ class _OrderPageState extends State<OrderPage> {
         ),
       ),
     );
+
+  }
+   getCurrentPosition() async{
+    Position position = await Geolocator.getCurrentPosition();
+     List<Placemark> locais =   await placemarkFromCoordinates(position.latitude, position.longitude);
+
+
+      return locais.first;
   }
 }

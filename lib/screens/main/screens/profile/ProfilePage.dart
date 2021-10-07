@@ -1,14 +1,25 @@
+import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:faxina_ja_app/screens/main/screens/profile/components/ProfileMenu.dart';
 import 'package:flutter/material.dart';
 
+import 'MyProfile.dart';
+
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key, required this.token}) : super(key: key);
+
+  final LoginToken? token;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +43,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 text: "Meu Perfil",
                 press: () => {
                   print("MyProfile"),
-                  Navigator.pushNamed(context, "MyProfile")
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) =>
+                MyProfile(token: widget.token))),
+
                 },
                 icon: Icon(
                   Icons.person,
