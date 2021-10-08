@@ -16,12 +16,6 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
   bool isObscurePassword = true;
-  @override
-  void initState() {
-    super.initState();
-  }
-
-
 
   @override
   Widget build(BuildContext context) {

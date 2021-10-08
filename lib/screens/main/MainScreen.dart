@@ -17,9 +17,13 @@ class _MainScreenState extends State<MainScreen> {
 
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = HistoricPage();
+  late Widget currentScreen;
 
-
+@override
+  void initState() {
+    currentScreen = HistoricPage(token: widget.token,);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -69,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = HistoricPage();
+                        currentScreen = HistoricPage(token: widget.token,);
                         currentTab = 0;
                       });
                     },

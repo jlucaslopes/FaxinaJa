@@ -143,11 +143,9 @@ class _OrderPageState extends State<OrderPage> {
                                                 tipoServicoEscolhido =
                                                     newValue.toString();
                                               });
-                                              print(tipoServicoEscolhido);
                                             },
                                             onTap: () {
                                               setState(() {});
-                                              print(tipoServicoEscolhido);
                                             },
                                             items: tipoServico.map((valueItem) {
                                               return DropdownMenuItem(
@@ -300,21 +298,20 @@ class _OrderPageState extends State<OrderPage> {
                               Color.fromRGBO(167, 34, 162, 100)),
                         ),
                         onPressed: () async {
+                          List<String> extraServices = [];
+                          geladeira ? extraServices.add("GELADEIRA"): null;
+                          compras ? extraServices.add("COMPRAS"): null;
+                          cortinas ? extraServices.add("CORTINAS"): null;
+
                           Placemark currentPosition = await getCurrentPosition();
-                          OrderRequest order = new OrderRequest(status: "ABERTO",
-                              clientId: widget.token!.token,
-                              professionalId: "",
+                          OrderRequest order = new OrderRequest(
                               serviceType: tipoServicoEscolhido,
-                              serviceValue: 0,
+                              extraServices: extraServices,
+                              serviceDate: _dateTime.toString(),
                               address: new Address(street: currentPosition.street.toString() ,
                                   number: int.parse(currentPosition.name.toString()),
                                   city: currentPosition.locality.toString(),
-                                  state: currentPosition.administrativeArea.toString(),
-                                  country: currentPosition.country.toString(),
-                                  zipCode: currentPosition.postalCode.toString()
-                                  , region: currentPosition.country.toString()));
-
-                          print(_dateTime.toString());
+                                 ));
                           new OrderService().createDemand(order, widget.token!.token );
                           //Enviar o pedido
                           // Navigator.of(context).pop();
