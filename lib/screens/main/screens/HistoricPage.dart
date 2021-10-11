@@ -51,12 +51,15 @@ class _HistoricPageState extends State<HistoricPage> {
                   color: Color.fromRGBO(97, 46, 109, 15),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Container(child: FutureBuilder<List<OrderResponse>>(
+                child: Container(
+
+                  child:FutureBuilder<List<OrderResponse>>(
                   future: OrderService().findMyOrders(widget.token),
                   builder: (context,snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
                       return buildListView(snapshot.data);
-                    } else {
+                    }
+                      else {
                       return Center(
                         child: CircularProgressIndicator(),
                       );

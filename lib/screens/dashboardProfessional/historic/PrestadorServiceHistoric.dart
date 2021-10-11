@@ -1,3 +1,5 @@
+import 'package:faxina_ja_app/models/OrderResponse.dart';
+import 'package:faxina_ja_app/services/OrderService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,7 @@ class PrestadorServiceHistoric extends StatefulWidget {
 }
 
 class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,33 +46,32 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
           color: Color.fromRGBO(237, 205, 248, 100),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
+          padding: const EdgeInsets.only( left: 10, right: 10),
           child: Container(
               width: size.width,
-              height: size.height * 0.7,
+              height: size.height * 0.95,
               decoration: BoxDecoration(
                 color: Color.fromRGBO(55, 10, 91, 30),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Container(
                 margin: EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    Padding(padding: const EdgeInsets.only(top: 10)),
-                    Text(
-                      "Histórico de Serviços ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Lalezar",
-                          fontSize: 24),
-                      textAlign: TextAlign.center,
-                    ),
-                    buildListTile(),
-                    buildListTile(),
-                    buildListTile(),
-                    buildListTile(),
-                    buildListTile(),
-                  ],
+                child: FutureBuilder<List<OrderResponse>>(
+                  future: OrderService().findOpenOrders(widget.token),
+                  builder: (context, snapshot){
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      print(snapshot.data.toString());
+                      if(snapshot.hasError) {
+                        print(snapshot.error);
+                        return Text("Nao foi possivel trazer os resultados");
+                      }
+                      return listView(snapshot.data!);
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
                 ),
               )
             // ],
@@ -81,9 +83,17 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
   }
 
 
+Widget listView(List<OrderResponse> orders) {
+    return ListView.builder(
+        itemCount: orders.length ,
+        itemBuilder: (BuildContext ctx, int index)
+    {
+      return buildListTile(orders[index]);
+    });
+}
 
+  Widget buildListTile(OrderResponse order) {
 
-  Widget buildListTile() {
     return Container(
       margin: EdgeInsets.all(7),
       decoration: BoxDecoration(
@@ -151,7 +161,7 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
                     ),
                   ),
                   Text(
-                    "Rua Fagundes Teixeira, 26",
+                    order.address.street + ", "+order.address.number.toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,
@@ -173,7 +183,7 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
                     ),
                   ),
                   Text(
-                    "Limpeza área interna da residência",
+                    enumToString(order.serviceType),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,
@@ -186,7 +196,7 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Valor recebido: ",
+                      "Valor a ser pago: ",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -194,8 +204,7 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
                       ),
                     ),
                   ),
-                  Text(
-                    "R\$ 150,00",
+                  Text("R\$ "+ order.serviceValue.toDouble().toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,
@@ -253,5 +262,19 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
       ),
     );
   }
+  String enumToString(String serviceType) {
 
+    switch (serviceType){
+      case "limpezaGeral":
+        return "Faxina completa";
+      case "limpezaSimples":
+        return "Faxina parcial";
+      case "limpezaPequena":
+        return "Faxina pequena";
+      case "areaExterna":
+        return "Apenas Area Externa";
+      default:
+        return serviceType;
+    }
+  }
 }

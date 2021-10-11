@@ -35,4 +35,21 @@ class OrderService {
 
     return myDemands;
   }
+
+  Future<List<OrderResponse>> findOpenOrders(String token) async {
+    var uri = Uri.parse(BASE_URL + 'find-open-demands');
+
+    var response = await http.get(
+      uri,
+      headers: {"Content-Type": "application/json","Authorization":token},);
+
+    List<dynamic> json = jsonDecode(response.body);
+
+    List<OrderResponse> myDemands = json
+        .map<OrderResponse>(
+            (resp) => OrderResponse.fromJson(resp))
+        .toList();
+
+    return myDemands;
+  }
 }
