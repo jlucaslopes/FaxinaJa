@@ -7,7 +7,7 @@ import 'screens/profile/ProfilePage.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key, required this.token}) : super(key: key);
-  final LoginToken token;
+  final String token;
   @override
   _MainScreenState createState() => _MainScreenState();
 }

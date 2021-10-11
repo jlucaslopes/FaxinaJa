@@ -7,7 +7,7 @@ import 'MyProfile.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.token}) : super(key: key);
 
-  final LoginToken? token;
+  final String token;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();

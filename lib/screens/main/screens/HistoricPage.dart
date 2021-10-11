@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class HistoricPage extends StatefulWidget {
   const HistoricPage({Key? key, required this.token}) : super(key: key);
-  final LoginToken token;
+  final String token;
   @override
   _HistoricPageState createState() => _HistoricPageState();
 }
@@ -52,7 +52,7 @@ class _HistoricPageState extends State<HistoricPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Container(child: FutureBuilder<List<OrderResponse>>(
-                  future: OrderService().findMyOrders(widget.token.token),
+                  future: OrderService().findMyOrders(widget.token),
                   builder: (context,snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
                       return buildListView(snapshot.data);

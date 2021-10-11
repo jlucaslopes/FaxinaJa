@@ -267,14 +267,22 @@ class _LoginPageState extends State<LoginPage> {
                 print(_emailController.text);
                 print(_senhaController.text);
                 if (_form.currentState!.validate()) {
-                  var token = await authService.login(
+                  var responseLogin = await authService.login(
                       _emailController.text, _senhaController.text);
-                  if (token.isNotEmpty) {
+                  if (responseLogin.token.isNotEmpty) {
+                    //Navigator.pushReplacement(
+                    //  context,
+                    //  MaterialPageRoute(
+                    //      builder: (context) =>
+                    //          MainScreen(token: responseLogin.token)),
+                    //);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              MainScreen(token: new LoginToken(token: token))),
+                              ServicesHistoricPage(token: responseLogin.token
+                                 )
+                      ),
                     );
                   } else {
                     senhaIncorreta = !senhaIncorreta;
@@ -318,11 +326,11 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.blueAccent,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ServicesHistoricPage()),
-                    );
+                   // Navigator.push(
+                   //   context,
+                   //   MaterialPageRoute(
+                   //       builder: (context) => ServicesHistoricPage()),
+                   // );
                   },
                 ),
               ],

@@ -1,4 +1,3 @@
-import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:faxina_ja_app/models/OrderRequest.dart';
 import 'package:faxina_ja_app/services/OrderService.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ import 'ExtraWidget.dart';
 class OrderPage extends StatefulWidget {
   const OrderPage({Key? key, required this.token}) : super(key: key);
 
-  final LoginToken? token;
+  final String token;
   @override
   _OrderPageState createState() => _OrderPageState();
 }
@@ -305,14 +304,14 @@ class _OrderPageState extends State<OrderPage> {
 
                           Placemark currentPosition = await getCurrentPosition();
                           OrderRequest order = new OrderRequest(
-                              serviceType: tipoServicoEscolhido,
+                              serviceType: serviceTypeToEnum(tipoServicoEscolhido),
                               extraServices: extraServices,
                               serviceDate: _dateTime.toString(),
                               address: new Address(street: currentPosition.street.toString() ,
                                   number: int.parse(currentPosition.name.toString()),
                                   city: currentPosition.locality.toString(),
                                  ));
-                          new OrderService().createDemand(order, widget.token!.token );
+                          new OrderService().createDemand(order, widget.token );
                           //Enviar o pedido
                           // Navigator.of(context).pop();
 
@@ -334,6 +333,23 @@ class _OrderPageState extends State<OrderPage> {
         ),
       ),
     );
+
+  }
+
+  String serviceTypeToEnum(String serviceType){
+
+    switch (serviceType){
+      case "Faxina completa":
+        return "limpezaGeral";
+      case "Faxina parcial":
+        return "limpezaSimples";
+      case "Faxina pequena":
+        return "limpezaPequena";
+      case "Apenas Area Externa":
+        return "areaExterna";
+      default:
+        return serviceType;
+    }
 
   }
    getCurrentPosition() async{

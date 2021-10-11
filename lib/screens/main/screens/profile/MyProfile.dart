@@ -9,7 +9,7 @@ import 'components/ProfilePic.dart';
 class MyProfile extends StatefulWidget {
   const MyProfile({Key? key,  required this.token}) : super(key: key);
 
-  final LoginToken? token;
+  final String token;
   @override
   _MyProfileState createState() => _MyProfileState();
 }
@@ -36,7 +36,7 @@ class _MyProfileState extends State<MyProfile> {
         padding: EdgeInsets.only(left: 15, top: 20, right: 15),
         child: SingleChildScrollView(
           child: FutureBuilder<UserInfo>(
-            future: new ProfileService().findUser(widget.token!.token),
+            future: new ProfileService().findUser(widget.token),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return buildScreen(snapshot.data, context);
