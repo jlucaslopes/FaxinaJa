@@ -19,7 +19,7 @@ class OrderService {
          .catchError((onError) => print(onError));
   }
 
-  Future<List<OrderResponse>> findMyOrders(String token) async {
+  Future<List<OrderResponse>> findMyOpenedDemands(String token) async {
     var uri = Uri.parse(BASE_URL + 'find-my-demands');
 
     var response = await http.get(
@@ -51,5 +51,32 @@ class OrderService {
         .toList();
 
     return myDemands;
+  }
+
+  Future<List<OrderResponse>> findMyMadeDemands(String token) async {
+    var uri = Uri.parse(BASE_URL + 'find-my-made-demands');
+
+    var response = await http.get(
+      uri,
+      headers: {"Content-Type": "application/json","Authorization":token},);
+
+    List<dynamic> json = jsonDecode(response.body);
+
+    List<OrderResponse> myDemands = json
+        .map<OrderResponse>(
+            (resp) => OrderResponse.fromJson(resp))
+        .toList();
+
+    return myDemands;
+  }
+
+
+  Future<void> assignDemandToProfessional(String token, String demandId) async {
+    var uri = Uri.parse(BASE_URL + 'assign-demand/'+demandId);
+
+    await http.post(
+      uri,
+      headers: {"Content-Type": "application/json","Authorization":token},);
+
   }
 }

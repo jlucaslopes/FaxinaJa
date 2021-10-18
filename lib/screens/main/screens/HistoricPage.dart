@@ -54,7 +54,7 @@ class _HistoricPageState extends State<HistoricPage> {
                 child: Container(
 
                   child:FutureBuilder<List<OrderResponse>>(
-                  future: OrderService().findMyOrders(widget.token),
+                  future: OrderService().findMyOpenedDemands(widget.token),
                   builder: (context,snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
                       return buildListView(snapshot.data);

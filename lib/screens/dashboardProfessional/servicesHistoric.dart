@@ -1,5 +1,6 @@
 import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:faxina_ja_app/screens/dashboardProfessional/historic/PrestadorServiceHistoric.dart';
+import 'package:faxina_ja_app/screens/dashboardProfessional/searchDemand/searchDemand.dart';
 import 'package:flutter/material.dart';
 
 import './professionalProfile/professionalProfile.dart';
@@ -32,6 +33,30 @@ class _ServicesHistoricPageState extends State<ServicesHistoricPage> {
         bucket: bucket,
         child: currentScreen,
       ),//buildServiceHistoric(context),
+      floatingActionButton: Container(
+        height: 70.0,
+        width: 70.0,
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.search,
+            size: 30,
+            color: Colors.white,
+          ),
+          backgroundColor: Color.fromRGBO(97, 46, 150, 1),
+          elevation: 20,
+          isExtended: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+              side: BorderSide(color: Colors.white, width: 2)),
+          onPressed: () {
+            setState(() {
+              currentScreen = SearchDemandPage(token: widget.token,);
+              currentTab = 2;
+            });
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Color.fromRGBO(55, 10, 91, 01),
         shape: CircularNotchedRectangle(),
@@ -72,7 +97,7 @@ class _ServicesHistoricPageState extends State<ServicesHistoricPage> {
                 onPressed: () {
                   setState(() {
                     print("Perfil selecionado");
-                    currentScreen = ProfessionalProfilePage();
+                    currentScreen = ProfessionalProfilePage(token: widget.token,);
                     currentTab = 3;
                   });
                 },

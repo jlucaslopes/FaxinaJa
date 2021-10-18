@@ -1,107 +1,105 @@
 import 'package:faxina_ja_app/models/OrderResponse.dart';
 import 'package:faxina_ja_app/services/OrderService.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PrestadorServiceHistoric extends StatefulWidget {
-  const PrestadorServiceHistoric({ Key? key,required this.token}) : super(key: key);
-
+class SearchDemandPage extends StatefulWidget {
+  const SearchDemandPage({Key? key, required this.token}) : super(key: key);
   final String token;
   @override
-  _PrestadorServiceHistoricState createState() => _PrestadorServiceHistoricState();
+  _SearchDemandPageState createState() => _SearchDemandPageState();
 }
 
-class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
+class _SearchDemandPageState extends State<SearchDemandPage> {
 
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     print("building entire screen");
     return Scaffold(
-      appBar:AppBar(
-      centerTitle: true,
-      backgroundColor: Color.fromRGBO(55, 10, 91, 01),
-      automaticallyImplyLeading: false,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Veja os serviços ",
-            style: TextStyle(
-                fontSize: 20, color: Colors.white, fontFamily: 'Lalezar'),
-          ),
-          Text(
-            "Realizados",
-            style: TextStyle(
-                fontSize: 23, color: Colors.white, fontFamily: 'Lalezar'),
-          )
-        ],
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(55, 10, 91, 01),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Veja os serviços ",
+              style: TextStyle(
+                  fontSize: 20, color: Colors.white, fontFamily: 'Lalezar'),
+            ),
+            Text(
+              "disponíveis",
+              style: TextStyle(
+                  fontSize: 23, color: Colors.white, fontFamily: 'Lalezar'),
+            )
+          ],
+        ),
       ),
-    ),
-    body: Stack(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          color: Color.fromRGBO(237, 205, 248, 100),
-        ),
-        Padding(
-          padding: const EdgeInsets.only( left: 10, right: 10),
-          child: Container(
-              width: size.width,
-              height: size.height * 0.95,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(55, 10, 91, 30),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: FutureBuilder<List<OrderResponse>>(
-                  future: OrderService().findMyMadeDemands(widget.token),
-                  builder: (context, snapshot){
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      print(snapshot.data.toString());
-                      if(snapshot.hasError) {
-                        print(snapshot.error);
-                        return Text("Nao foi possivel trazer os resultados");
-                      }
-                      print("building ListView");
-                      return snapshot.hasData ? listView(snapshot.data!) : Center(
-                        child: Text(
-                    "Veja os serviços ",
-                    style: TextStyle(
-                    fontSize: 20, color: Colors.white, fontFamily: 'Lalezar'),
-                    ),
-                      );
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              )
-            // ],
-            // ),
+      body: Stack(
+        children: [
+          Container(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
+            color: Color.fromRGBO(237, 205, 248, 100),
           ),
-        ),
-      ],
-    ),);
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Container(
+                width: size.width,
+                height: size.height * 0.95,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(55, 10, 91, 30),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: FutureBuilder<List<OrderResponse>>(
+                    future: OrderService().findOpenOrders(widget.token),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        print(snapshot.data.toString());
+                        if (snapshot.hasError) {
+                          print(snapshot.error);
+                          return Text("Nao foi possivel trazer os resultados");
+                        }
+                        print("building ListView");
+                        return listView(snapshot.data!);
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                )
+              // ],
+              // ),
+            ),
+          ),
+        ],
+      ),);
   }
 
 
-Widget listView(List<OrderResponse> orders) {
+  Widget listView(List<OrderResponse> orders) {
     return ListView.builder(
-        itemCount: orders.length ,
-        itemBuilder: (BuildContext ctx, int index)
-    {
-      return buildListTile(orders[index]);
-    });
-}
+        itemCount: orders.length,
+        itemBuilder: (BuildContext ctx, int index) {
+          return buildListTile(orders[index]);
+        });
+  }
 
   Widget buildListTile(OrderResponse order) {
-
     return Container(
       margin: EdgeInsets.all(7),
       decoration: BoxDecoration(
@@ -112,22 +110,22 @@ Widget listView(List<OrderResponse> orders) {
         //dense: true,
         isThreeLine: true,
         selectedTileColor: Colors.white,
-        // trailing: Container(
-        //   child: IconButton(icon: Icon(Icons.person_add_rounded,size: 35,),
-        //     onPressed: (){
-        //     setState(() {
-        //      OrderService().assignDemandToProfessional(widget.token, order.id);
-        //     });
-//
-        //   },),
-        // ),
+        trailing: Container(
+          child: IconButton(icon: Icon(Icons.person_add_rounded, size: 35,),
+            onPressed: () {
+              setState(() {
+                OrderService().assignDemandToProfessional(
+                    widget.token, order.id);
+              });
+            },),
+        ),
         title: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-            enumToString(order.serviceType),
+                  enumToString(order.serviceType),
                   style: TextStyle(
                     fontFamily: 'Lalezar',
                     fontSize: 20,
@@ -155,7 +153,8 @@ Widget listView(List<OrderResponse> orders) {
                     ),
                   ),
                   Text(
-                    order.address.street + ", "+order.address.number.toString(),
+                    order.address.street + ", " +
+                        order.address.number.toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,
@@ -176,7 +175,7 @@ Widget listView(List<OrderResponse> orders) {
                       ),
                     ),
                   ),
-                  Text("R\$ "+ order.serviceValue.toDouble().toString(),
+                  Text("R\$ " + order.serviceValue.toDouble().toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,
@@ -234,9 +233,9 @@ Widget listView(List<OrderResponse> orders) {
       ),
     );
   }
-  String enumToString(String serviceType) {
 
-    switch (serviceType){
+  String enumToString(String serviceType) {
+    switch (serviceType) {
       case "limpezaGeral":
         return "Faxina completa";
       case "limpezaSimples":

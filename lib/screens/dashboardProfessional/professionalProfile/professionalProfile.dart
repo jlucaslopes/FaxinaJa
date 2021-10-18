@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import './ProfilesDetails.dart';
 
 class ProfessionalProfilePage extends StatefulWidget {
-  const ProfessionalProfilePage({Key? key}) : super(key: key);
-
+  const ProfessionalProfilePage({Key? key, required this.token}) : super(key: key);
+  final String token;
   @override
   _ProfessionalProfilePageState createState() =>
       _ProfessionalProfilePageState();
@@ -37,7 +37,7 @@ class _ProfessionalProfilePageState extends State<ProfessionalProfilePage> {
                   print("ProfileDetails"),
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilesDetails()),
+                    MaterialPageRoute(builder: (context) => ProfilesDetails(token: widget.token,)),
                   )
                 },
                 icon: Icon(

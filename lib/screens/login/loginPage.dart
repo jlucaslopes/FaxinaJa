@@ -270,20 +270,17 @@ class _LoginPageState extends State<LoginPage> {
                   var responseLogin = await authService.login(
                       _emailController.text, _senhaController.text);
                   if (responseLogin.token.isNotEmpty) {
-                    //Navigator.pushReplacement(
-                    //  context,
-                    //  MaterialPageRoute(
-                    //      builder: (context) =>
-                    //          MainScreen(token: responseLogin.token)),
-                    //);
+                    if("cliente"==responseLogin.userType){
+                      Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) =>
+                              MainScreen(token: responseLogin.token)),
+                    );} else{
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ServicesHistoricPage(token: responseLogin.token
-                                 )
-                      ),
-                    );
+                      MaterialPageRoute(builder: (context) =>
+                              ServicesHistoricPage(token: responseLogin.token)),);
+                    }
                   } else {
                     senhaIncorreta = !senhaIncorreta;
                   }
