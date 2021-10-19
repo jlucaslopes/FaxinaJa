@@ -47,6 +47,7 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
       ),
     );
   }
+
   Widget buildSingle(UserInfo user){
     return SingleChildScrollView(
       child: Column(
@@ -58,10 +59,10 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
           buildTextField("Nome:", user.name, false),
           buildTextField("Documento", user.document, false),
           buildTextField("Email", user.email, false),
-          buildTextField("Endereço:", user.name, false),
-          buildTextField("Bairro:", "Jardim Doce", false),
-          buildTextField("Cidade:", "São Paulo", false),
-          buildTextField("Estado:", "SP", false),
+          buildTextField("Endereço:", user.address.street + ", " + user.address.number.toString(), false),
+          buildTextField("CEP:", user.address.zipCode, false),
+          buildTextField("Cidade:", user.address.city, false),
+          buildTextField("Estado:", user.address.state, false),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

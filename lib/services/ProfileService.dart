@@ -7,7 +7,7 @@ class ProfileService {
 
   final BASE_URL = 'http://10.0.2.2:3000/faxinaja-api/users/';
 
-  Future<UserInfo> findUser( String token) async {
+  Future<UserInfo> findUser(String token) async {
     var uri = Uri.parse(BASE_URL + 'find-user');
 
     var response = await http.get(
@@ -15,6 +15,7 @@ class ProfileService {
       headers: {"Content-Type": "application/json","Authorization":token},);
 
     var json = jsonDecode(response.body);
-    return UserInfo.fromJson(json);
+    var user = UserInfo.fromJson(json);
+    return user;
   }
 }

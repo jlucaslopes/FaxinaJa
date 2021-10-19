@@ -61,12 +61,13 @@ class _PrestadorServiceHistoricState extends State<PrestadorServiceHistoric> {
                   future: OrderService().findMyMadeDemands(widget.token),
                   builder: (context, snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
-                      print(snapshot.data.toString());
+
                       if(snapshot.hasError) {
                         print(snapshot.error);
                         return Text("Nao foi possivel trazer os resultados");
                       }
                       print("building ListView");
+                      print(snapshot.data!.toList().length);
                       return snapshot.hasData ? listView(snapshot.data!) : Center(
                         child: Text(
                     "Veja os serviços ",
@@ -97,7 +98,7 @@ Widget listView(List<OrderResponse> orders) {
         itemBuilder: (BuildContext ctx, int index)
     {
       return buildListTile(orders[index]);
-    });
+    } );
 }
 
   Widget buildListTile(OrderResponse order) {
@@ -112,15 +113,12 @@ Widget listView(List<OrderResponse> orders) {
         //dense: true,
         isThreeLine: true,
         selectedTileColor: Colors.white,
-        // trailing: Container(
-        //   child: IconButton(icon: Icon(Icons.person_add_rounded,size: 35,),
-        //     onPressed: (){
-        //     setState(() {
-        //      OrderService().assignDemandToProfessional(widget.token, order.id);
-        //     });
-//
-        //   },),
-        // ),
+        trailing: Container(
+          child: Text(order.status.toUpperCase(), style: TextStyle(
+            fontFamily: 'Lalezar',
+            fontSize: 15,
+          ),)
+        ),
         title: Column(
           children: [
             Row(

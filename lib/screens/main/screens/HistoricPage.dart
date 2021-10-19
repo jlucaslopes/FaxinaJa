@@ -23,12 +23,12 @@ class _HistoricPageState extends State<HistoricPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Veja o seu ",
+              "Veja os seus ",
               style: TextStyle(
                   fontSize: 20, color: Colors.white, fontFamily: 'Lalezar'),
             ),
             Text(
-              "Histórico",
+              "Pedidos",
               style: TextStyle(
                   fontSize: 23, color: Colors.white, fontFamily: 'Lalezar'),
             )
@@ -57,7 +57,7 @@ class _HistoricPageState extends State<HistoricPage> {
                   future: OrderService().findMyOpenedDemands(widget.token),
                   builder: (context,snapshot){
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return buildListView(snapshot.data);
+                      return buildListView(snapshot.data!);
                     }
                       else {
                       return Center(
@@ -75,149 +75,193 @@ class _HistoricPageState extends State<HistoricPage> {
       ),
     );
   }
-}
 
-Widget buildListView(List<OrderResponse>? orders) {
+  Widget buildListView(List<OrderResponse> orders) {
+    return ListView.builder(
+        itemCount: orders.length ,
+        itemBuilder: (BuildContext ctx, int index) {
+          return buildListTilee(orders[index]);
+        }
+    );
 
-  return ListView.builder(
-    itemCount: orders == null ? 0 :orders.length ,
-    itemBuilder: (BuildContext ctx, int index) {
-     final double avatarSize = 50;
-     DateTime serviceDate = DateTime.parse(orders![index].serviceDate);
-     return Container(
-       margin: EdgeInsets.all(8),
-       decoration: BoxDecoration(
-         borderRadius: BorderRadius.circular(12),
-         color: Colors.white,
-       ),
-       child: ListTile(
-         //dense: true,
-         isThreeLine: true,
-         selectedTileColor: Colors.white,
-         leading: Container(
-           width: avatarSize,
-           height: avatarSize,
-           child: CircleAvatar(
-             minRadius: 12,
-             maxRadius: 40,
-             backgroundImage: AssetImage("assets/mariamadalena.png"),
-           ),
-         ),
-         title: Column(
-           children: [
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
+  }
 
-                   orders[index].professionalId.isNotEmpty ?  orders[index].professionalId :"Aguarde profissional..."  ,
-                   style: TextStyle(
-                     fontFamily: 'Lalezar',
-                     fontSize: 18,
-                   ),
-                 ),
-                 orders[index].status == "FINALIZADO" ?
-                 Row(children: [
-                   Icon(
-                     Icons.star,
-                     color: Colors.amber,
-                   ),
-                   Text(
-                     "4,8",
-                     style: TextStyle(
-                       fontFamily: 'Lalezar',
-                       fontSize: 18,
-                     ),
-                   ),
-                 ]): Text(
-                   orders[index].status.toUpperCase(),
-                   style: TextStyle(
-                     fontFamily: 'Lalezar',
-                     fontSize: 18,
-                   ),
-                 ),
-               ],
-             ),
-           ],
-         ),
-         subtitle: Padding(
-           padding: const EdgeInsets.only(bottom: 12),
-           child: Column(
-             children: [
-               Row(
-                 children: [
-                   Align(
-                     alignment: Alignment.centerLeft,
-                     child: Text(
-                       "Serviço: ",
-                       style: TextStyle(
-                         fontSize: 15,
-                         color: Colors.black,
-                         fontWeight: FontWeight.bold,
-                       ),
-                     ),
-                   ),
-                   Text(
-                     orders[index].serviceType,
-                     style: TextStyle(
-                       fontSize: 13,
-                       color: Colors.grey,
-                     ),
-                   ),
-                 ],
-               ),
-               Row(
-                 children: [
-                   Align(
-                     alignment: Alignment.centerLeft,
-                     child: Text(
-                       "Valor: ",
-                       style: TextStyle(
-                         fontSize: 15,
-                         color: Colors.black,
-                         fontWeight: FontWeight.bold,
-                       ),
-                     ),
-                   ),
-                   Text(
-                     "R\$" + orders[index].serviceValue.toString() +",00",
-                     style: TextStyle(
-                       fontSize: 13,
-                       color: Colors.grey,
-                     ),
-                   ),
-                 ],
-               ),
-               Row(
-                 children: [
-                   Align(
-                     alignment: Alignment.centerLeft,
-                     child: Text(
-                       "Data da realização: ",
-                       style: TextStyle(
-                         fontSize: 15,
-                         color: Colors.black,
-                         fontWeight: FontWeight.bold,
-                       ),
-                     ),
-                   ),
-                   Text(serviceDate.day.toString()+"/"
-                       +serviceDate.month.toString()+"/"
-                       +serviceDate.year.toString(),
-                     style: TextStyle(
-                       fontSize: 13,
-                       color: Colors.grey,
-                     ),
-                   ),
-                 ],
-               ),
-             ],
-           ),
-         ),
-       ),
-     );
+  Widget buildListTilee(OrderResponse orders) {
+    DateTime serviceDate = DateTime.parse(orders.serviceDate);
+    final double avatarSize = 50;
+    return Container(
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+      ),
+      child: ListTile(
+        //dense: true,
+        isThreeLine: true,
+        selectedTileColor: Colors.white,
+        trailing: Container(
+          child: orders.status.toUpperCase() == "AGENDADO" ?
+          Column(
+            children: [
+              IconButton(icon: Icon(Icons.check, size: 40, color: Colors.lightGreen,),
+                onPressed: () {
+                  setState(() {
+                    OrderService().finishDemand(widget.token, orders.id);
+                  });
+                  print("concluir" + orders.id);
+                },),
+            ],
+          ) : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text( orders.status.toUpperCase(),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ), ),
+            ],
+          ),
+        ),
+        leading: Container(
+          width: avatarSize,
+          height: avatarSize,
+          child: CircleAvatar(
+            minRadius: 12,
+            maxRadius: 40,
+            backgroundImage: AssetImage("assets/mariamadalena.png"),
+          ),
+        ),
+        title: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  orders.status.toUpperCase() == "ABERTO" ?  "Aguarde profissional...": orders.status.toUpperCase()  ,
+                  style: TextStyle(
+                    fontFamily: 'Lalezar',
+                    fontSize: 18,
+                  ),
+                ),
+                //     orders[index].status == "FINALIZADO" ?
+                //     Row(children: [
+                //       Icon(
+                //         Icons.star,
+                //         color: Colors.amber,
+                //       ),
+                //       Text(
+                //         "4,8",
+                //         style: TextStyle(
+                //           fontFamily: 'Lalezar',
+                //           fontSize: 18,
+                //         ),
+                //       ),
+                //     ]):
+                //     Text(
+                //       orders[index].status.toUpperCase(),
+                //       style: TextStyle(
+                //         fontFamily: 'Lalezar',
+                //         fontSize: 18,
+                //       ),
+                //     ),
+              ],
+            ),
+          ],
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Serviço: ",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    enumToString(orders.serviceType) ,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Valor: ",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "R\$ " + orders.serviceValue.toString() +",00",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Data da realização: ",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Text(serviceDate.day.toString()+"/"
+                      +serviceDate.month.toString(),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  String enumToString(String serviceType) {
+
+    switch (serviceType){
+      case "limpezaGeral":
+        return "Faxina completa";
+      case "limpezaSimples":
+        return "Faxina parcial";
+      case "limpezaPequena":
+        return "Faxina pequena";
+      case "areaExterna":
+        return "Apenas Area Externa";
+      default:
+        return serviceType;
     }
-  );
+  }
+
 }
+
 
 

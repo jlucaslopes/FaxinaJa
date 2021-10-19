@@ -36,36 +36,36 @@ class _MyProfileState extends State<MyProfile> {
         padding: EdgeInsets.only(left: 15, top: 20, right: 15),
         child: SingleChildScrollView(
           child: FutureBuilder<UserInfo>(
-            future: new ProfileService().findUser(widget.token),
+            future: ProfileService().findUser(widget.token),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return buildScreen(snapshot.data, context);
+                return buildScreen(snapshot.data!);
               } else {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
             },
-          )
-
-              //buildScreen()
+          ) //buildScreen()
         ),
       ),
     );
   }
 
-  Widget buildScreen(UserInfo? userInfo, BuildContext context){
+  Widget buildScreen(UserInfo userInfo){
   return Column(
     children: [
       ProfilePic(),
       SizedBox(
         height: 30,
       ),
-      buildTextField("Nome Completo",userInfo!.name , false),
-      buildTextField("Senha", userInfo.password, true),
+      buildTextField("Nome Completo",userInfo.name , false),
       buildTextField("Email", userInfo.email, false),
       buildTextField("Documento", userInfo.document, false),
-      //buildTextField("Data Nascimento", "__/__/__", false),
+      buildTextField("Endereço", userInfo.address.street + ", "+ userInfo.address.number.toString(), false),
+      buildTextField("Cidade", userInfo.address.city, false),
+      buildTextField("Estado", userInfo.address.state, false),
+      buildTextField("CEP", userInfo.address.zipCode, false),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -102,12 +102,13 @@ class _MyProfileState extends State<MyProfile> {
     ],
   );
   }
+
   Widget buildTextField(
       String labelText, String placeHolder, bool isPasswordTextField) {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextField(
-        obscureText: isPasswordTextField ? isObscurePassword : false,
+        obscureText: true,
         decoration: InputDecoration(
           suffixIcon: isPasswordTextField
               ? IconButton(

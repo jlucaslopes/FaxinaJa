@@ -79,4 +79,13 @@ class OrderService {
       headers: {"Content-Type": "application/json","Authorization":token},);
 
   }
+
+  Future<void> finishDemand(String token, String demandId) async {
+    var uri = Uri.parse(BASE_URL + 'finish-demand/'+demandId);
+
+    await http.post(
+      uri,
+      headers: {"Content-Type": "application/json","Authorization":token},);
+
+  }
 }
