@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'cadastreJa.dart';
-import '../registerProfessional/stepOneProfessional.dart';
+import 'cadastroCliente/cadastreJa.dart';
+import 'cadastroProfissional/stepOneProfessional.dart';
 
 class ChoseProfileScreen extends StatefulWidget {
   const ChoseProfileScreen({Key? key}) : super(key: key);

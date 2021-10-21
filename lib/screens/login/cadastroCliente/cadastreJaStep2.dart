@@ -1,5 +1,9 @@
+import 'package:faxina_ja_app/models/User.dart';
+import 'package:faxina_ja_app/services/UserService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CadastreJaStep2 extends StatefulWidget {
   String email;
@@ -17,13 +21,14 @@ class CadastreJaStep2 extends StatefulWidget {
 class _CadastreJaStep2State extends State<CadastreJaStep2> {
   final _form = GlobalKey<FormState>();
 
+  TextEditingController _nomeCompletoController = TextEditingController();
+  TextEditingController _telefoneController = TextEditingController();
+  TextEditingController _cpfController = TextEditingController();
+
   String _email;
   String _pass;
   _CadastreJaStep2State(this._email, this._pass);
 
-  String _nomeCompleto = "";
-  String _telefone = "";
-  late String _cpf;
 
   @override
   Widget build(BuildContext context) {
@@ -132,19 +137,25 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Color.fromRGBO(21, 9, 9, 53)),
                   ),
-                  onPressed: () {
-                    //   if (_form.currentState!.validate()) {
-                    //     Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) =>
-                    //                 CadastreJaStep3(_email, _pass)));
-                    //   } else {
-                    //     print("Inválido");
-                    //   }
+                  onPressed:  () async {
+                    Placemark currentPosition = await getCurrentPosition();
+                    User user = new User(name: _nomeCompletoController.text,
+                                        document: _cpfController.text,
+                                        email: _email,
+                                        password:_pass,
+                                        userType: "c",
+                                        address: new Address(street: currentPosition.street.toString(),
+                                                            number: int.parse(currentPosition.name.toString()),
+                                                            city: currentPosition.subAdministrativeArea.toString(),
+                                                            state: currentPosition.administrativeArea.toString(),
+                                                            country: currentPosition.country.toString(),
+                                                            zipCode: currentPosition.postalCode.toString(),
+                                                            region: ""));
+                    UserService().saveUser(user);
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                   child: Text(
-                    "Próximo",
+                    "Finalizar",
                     style:
                         TextStyle(fontFamily: "Lalezar", color: Colors.white),
                   ),
@@ -175,6 +186,7 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
           child: TextFormField(
               keyboardType: TextInputType.name,
               obscureText: false,
+              controller: _nomeCompletoController,
               decoration: InputDecoration(
                 labelStyle: TextStyle(
                   color: Colors.black,
@@ -188,21 +200,32 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
                     borderRadius:
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
-              validator: (value) {
-                // _confirmPass = value!;
-                // if (value.isEmpty) {
-                //   _confirmPass = "";
-                //   return "Campo Obrigatório";
-                // }
-                // if (value != _pass) {
-                //   _confirmPass = "";
-                //   return "Senhas nao coincidem";
-                // }
-                // _confirmPass = value;
-              }),
+              ),
         ),
       ],
     );
+  }
+  String serviceTypeToEnum(String serviceType){
+
+    switch (serviceType){
+      case "Faxina completa":
+        return "limpezaGeral";
+      case "Faxina parcial":
+        return "limpezaSimples";
+      case "Faxina pequena":
+        return "limpezaPequena";
+      case "Apenas Area Externa":
+        return "areaExterna";
+      default:
+        return serviceType;
+    }
+
+  }
+
+  getCurrentPosition() async{
+    Position position = await Geolocator.getCurrentPosition();
+    List<Placemark> locais =   await placemarkFromCoordinates(position.latitude, position.longitude);
+    return locais.first;
   }
 
   Widget inputTelTextField() {
@@ -221,6 +244,7 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
           child: TextFormField(
+              controller: _telefoneController,
               keyboardType: TextInputType.name,
               obscureText: false,
               decoration: InputDecoration(
@@ -236,18 +260,7 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
                     borderRadius:
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
-              validator: (value) {
-                // _confirmPass = value!;
-                // if (value.isEmpty) {
-                //   _confirmPass = "";
-                //   return "Campo Obrigatório";
-                // }
-                // if (value != _pass) {
-                //   _confirmPass = "";
-                //   return "Senhas nao coincidem";
-                // }
-                // _confirmPass = value;
-              }),
+            ),
         ),
       ],
     );
@@ -284,13 +297,13 @@ class _CadastreJaStep2State extends State<CadastreJaStep2> {
                     borderRadius:
                         const BorderRadius.all(Radius.circular(10.0))),
               ),
+              controller: _cpfController,
               validator: (value) {
-                _cpf = value!;
-                if (!CPFIsValid(value)) {
-                  _cpf = "";
+                if (!CPFIsValid(value!)) {
                   return "CPF Inválido";
                 }
-              }),
+              }
+              ),
         ),
       ],
     );

@@ -1,23 +1,40 @@
 import 'dart:ui';
 
+import 'package:faxina_ja_app/models/User.dart';
+import 'package:faxina_ja_app/services/UserService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
-import '../dashboardProfessional/servicesHistoric.dart';
 
-class CadastroProfessionalStepThree extends StatefulWidget {
-  const CadastroProfessionalStepThree({Key? key}) : super(key: key);
+class CadastroProfessionalStepTwo extends StatefulWidget {
+  String email;
+  String phone;
+  String name ;
+  String document ;
+
+  CadastroProfessionalStepTwo({
+  required this.email,
+  required this.phone,
+  required this.name ,
+  required this.document });
 
   @override
-  _CadastroProfessionalStepThree createState() =>
-      _CadastroProfessionalStepThree();
+  _CadastroProfessionalStepTwo createState() => _CadastroProfessionalStepTwo(email,phone,name,document);
 }
 
-class _CadastroProfessionalStepThree
-    extends State<CadastroProfessionalStepThree> {
+class _CadastroProfessionalStepTwo extends State<CadastroProfessionalStepTwo> {
   final _form = GlobalKey<FormState>();
   String _senha = "";
   String _confirmacao = "";
+
+  String email;
+  String phone;
+  String name ;
+  String document;
+
+  _CadastroProfessionalStepTwo(this.email,this.phone,this.name,this.document);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +101,7 @@ class _CadastroProfessionalStepThree
         children: <Widget>[
           Padding(
             padding:
-                const EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 10),
+            const EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 10),
             child: Text(
               "Insira seus dados",
               style: TextStyle(
@@ -112,17 +129,29 @@ class _CadastroProfessionalStepThree
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Color.fromRGBO(45, 19, 57, 100)),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_form.currentState!.validate()) {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => ServicesHistoricPage()),
-                    // );
+
+                        Placemark currentPosition = await getCurrentPosition();
+                        User user = new User(name: name,
+                            document: document,
+                            email: email,
+                            password: _senha,
+                            userType: "p",
+                            address: new Address(street: currentPosition.street.toString(),
+                                number: int.parse(currentPosition.name.toString()),
+                                city: currentPosition.subAdministrativeArea.toString(),
+                                state: currentPosition.administrativeArea.toString(),
+                                country: currentPosition.country.toString(),
+                                zipCode: currentPosition.postalCode.toString(),
+                                region: ""));
+                        UserService().saveUser(user);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+
                     }
                   },
                   child: Text(
-                    "Enviar Cadastro",
+                    "Finalizar",
                     style: TextStyle(
                         fontFamily: "Lalezar",
                         color: Colors.white,
@@ -166,10 +195,10 @@ class _CadastroProfessionalStepThree
                 fillColor: Colors.white,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
                     borderRadius:
-                        const BorderRadius.all(Radius.circular(10.0))),
+                    const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
                 _senha = value!;
@@ -211,10 +240,10 @@ class _CadastroProfessionalStepThree
                 fillColor: Colors.white,
                 filled: true,
                 contentPadding:
-                    new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
                     borderRadius:
-                        const BorderRadius.all(Radius.circular(10.0))),
+                    const BorderRadius.all(Radius.circular(10.0))),
               ),
               validator: (value) {
                 _confirmacao = value!;
@@ -232,7 +261,7 @@ class _CadastroProfessionalStepThree
       children: [
         Padding(
           padding:
-              const EdgeInsets.only(left: 30, right: 30, top: 25, bottom: 10),
+          const EdgeInsets.only(left: 30, right: 30, top: 25, bottom: 10),
           child: Text(
             "Assim q sua solicitação de cadastro for enviada, \n passara por uma autenticação que vai validar os \n dados informados, você será notificado \n assim que a avaliação for concluída !",
             textAlign: TextAlign.center,
@@ -245,5 +274,11 @@ class _CadastroProfessionalStepThree
         ),
       ],
     );
+  }
+
+  getCurrentPosition() async{
+    Position position = await Geolocator.getCurrentPosition();
+    List<Placemark> locais =   await placemarkFromCoordinates(position.latitude, position.longitude);
+    return locais.first;
   }
 }
