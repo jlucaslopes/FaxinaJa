@@ -1,4 +1,5 @@
 import 'package:faxina_ja_app/models/LoginToken.dart';
+import 'package:faxina_ja_app/models/User.dart';
 import 'package:faxina_ja_app/models/UserInfo.dart';
 import 'package:faxina_ja_app/services/ProfileService.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,8 +18,69 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   bool isObscurePassword = true;
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController nomeCompletoController = TextEditingController();
+  TextEditingController emailController        = TextEditingController();
+  TextEditingController documentoController    = TextEditingController();
+  TextEditingController enderecoController     = TextEditingController();
+  TextEditingController cidadeController       = TextEditingController();
+  TextEditingController estadoController       = TextEditingController();
+  TextEditingController CEPController          = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+
+    Widget buildScreen(UserInfo userInfo){
+      return Column(
+        children: [
+          ProfilePic(),
+          SizedBox(
+            height: 30,
+          ),
+          buildTextField("Nome Completo",userInfo.name , nomeCompletoController),
+          buildTextField("Email",        userInfo.email, emailController),
+          buildTextField("Documento",    userInfo.document, documentoController),
+          buildTextField("Endereço",     userInfo.address.street + ", "+ userInfo.address.number.toString(), enderecoController),
+          buildTextField("Cidade",       userInfo.address.city, cidadeController),
+          buildTextField("Estado",       userInfo.address.state, estadoController),
+          buildTextField("CEP",          userInfo.address.zipCode, CEPController),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "CANCELAR",
+                  style: TextStyle(
+                      fontSize: 13, letterSpacing: 2, color: Colors.black),
+                ),
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(59, 12, 79, 100),
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text(
+                  "SALVAR",
+                  style: TextStyle(
+                      fontSize: 13, letterSpacing: 2, color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(59, 12, 79, 10),
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+              )
+            ],
+          )
+        ],
+      );
+    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +93,7 @@ class _MyProfileState extends State<MyProfile> {
         automaticallyImplyLeading: false,
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        //height: MediaQuery.of(context).size.height,
         color: Color.fromRGBO(237, 205, 248, 100),
         padding: EdgeInsets.only(left: 15, top: 20, right: 15),
         child: SingleChildScrollView(
@@ -39,6 +101,13 @@ class _MyProfileState extends State<MyProfile> {
             future: ProfileService().findUser(widget.token),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
+                nomeCompletoController.text = snapshot.data!.name;
+                emailController.text = snapshot.data!.email;
+                documentoController.text = snapshot.data!.document;
+                enderecoController.text = snapshot.data!.address.street + ", " + snapshot.data!.address.number.toString();
+                cidadeController.text = snapshot.data!.address.city;
+                estadoController.text = snapshot.data!.address.state;
+                CEPController.text = snapshot.data!.address.zipCode;
                 return buildScreen(snapshot.data!);
               } else {
                 return Center(
@@ -52,74 +121,15 @@ class _MyProfileState extends State<MyProfile> {
     );
   }
 
-  Widget buildScreen(UserInfo userInfo){
-  return Column(
-    children: [
-      ProfilePic(),
-      SizedBox(
-        height: 30,
-      ),
-      buildTextField("Nome Completo",userInfo.name , false),
-      buildTextField("Email", userInfo.email, false),
-      buildTextField("Documento", userInfo.document, false),
-      buildTextField("Endereço", userInfo.address.street + ", "+ userInfo.address.number.toString(), false),
-      buildTextField("Cidade", userInfo.address.city, false),
-      buildTextField("Estado", userInfo.address.state, false),
-      buildTextField("CEP", userInfo.address.zipCode, false),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          OutlinedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              "CANCELAR",
-              style: TextStyle(
-                  fontSize: 13, letterSpacing: 2, color: Colors.black),
-            ),
-            style: OutlinedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(59, 12, 79, 100),
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text(
-              "SALVAR",
-              style: TextStyle(
-                  fontSize: 13, letterSpacing: 2, color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-                primary: Color.fromRGBO(59, 12, 79, 10),
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
-          )
-        ],
-      )
-    ],
-  );
-  }
+
 
   Widget buildTextField(
-      String labelText, String placeHolder, bool isPasswordTextField) {
+      String labelText, String placeHolder, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextField(
-        obscureText: true,
+        controller: controller,
         decoration: InputDecoration(
-          suffixIcon: isPasswordTextField
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isObscurePassword = !isObscurePassword;
-                    });
-                  },
-                  icon: Icon(Icons.remove_red_eye, color: Colors.grey),
-                )
-              : null,
           contentPadding: EdgeInsets.only(bottom: 5),
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,

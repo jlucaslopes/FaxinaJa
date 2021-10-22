@@ -3,6 +3,7 @@ import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:faxina_ja_app/screens/login/forgetPass.dart';
 import 'package:faxina_ja_app/screens/main/MainScreen.dart';
 import 'package:faxina_ja_app/services/authService.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'choseprofiles.dart';
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 70),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
           child: Container(
             width: size.width - 60,
             height: size.height * 0.4,
@@ -85,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(left: 150, right: 30, top: 130),
+            padding: const EdgeInsets.only(left: 150, right: 30, top: 95),
             child: Container(
               width: size.width - 60,
               height: size.height * 0.4,
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20)),
             )),
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
+          padding: const EdgeInsets.only(left: 30, right: 30),
           child: Column(
             children: [
               SizedBox(
@@ -147,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
         child: Container(
           width: size.width - 60,
-          height: size.height * 0.4,
+          height: size.height * 0.43,
           decoration: BoxDecoration(
             color: Color.fromRGBO(227, 168, 255, 100),
             borderRadius: BorderRadius.circular(20),
@@ -160,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget getForm() {
     return Padding(
-      padding: const EdgeInsets.only(left: 50, right: 50, top: 20),
+      padding: const EdgeInsets.only(left: 50, right: 50, top: 10),
       child: Form(
         key: _form,
         child: Column(
@@ -250,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             SizedBox(
-              height: 10,
+              height: 5,
             ),
             ElevatedButton(
               style: ButtonStyle(
@@ -293,9 +294,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  child: Text("Registre-se "),
+                  child: Text("Registre-se ",    style: TextStyle(
+                      fontFamily: "Lalezar", color: Color.fromRGBO(109, 46, 139, 100), fontSize: 20),),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -304,32 +307,32 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                 ),
-                Text(
-                  "ou use as opções:",
-                  style: TextStyle(color: Colors.white),
-                ),
-                IconButton(
-                  iconSize: 25,
-                  icon: Icon(
-                    Icons.facebook,
-                    color: Colors.blueAccent,
-                  ),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  iconSize: 25,
-                  icon: Icon(
-                    Icons.facebook,
-                    color: Colors.blueAccent,
-                  ),
-                  onPressed: () {
-                   // Navigator.push(
-                   //   context,
-                   //   MaterialPageRoute(
-                   //       builder: (context) => ServicesHistoricPage()),
-                   // );
-                  },
-                ),
+               // Text(
+               //   "ou use as opções:",
+               //   style: TextStyle(color: Colors.white),
+               // ),
+               // IconButton(
+               //   iconSize: 25,
+               //   icon: Icon(
+               //     Icons.facebook,
+               //     color: Colors.blueAccent,
+               //   ),
+               //   onPressed: () {},
+               // ),
+               // IconButton(
+               //   iconSize: 25,
+               //   icon: Icon(
+               //     Icons.facebook,
+               //     color: Colors.blueAccent,
+               //   ),
+               //   onPressed: () {
+               //    // Navigator.push(
+               //    //   context,
+               //    //   MaterialPageRoute(
+               //    //       builder: (context) => ServicesHistoricPage()),
+               //    // );
+               //   },
+               // ),
               ],
             ),
           ],
