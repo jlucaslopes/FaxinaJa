@@ -12,8 +12,21 @@ class UserService {
     var uri = Uri.parse(BASE_URL + 'create-user');
 
     var response = await http.post(
-      uri,
-      headers: {"Content-Type": "application/json"},
-    body: jsonEncode(user) );
+        uri,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(user) );
+  }
+
+  void updateUser(String token, User user) async {
+    var uri = Uri.parse(BASE_URL + 'update-user');
+
+    print(jsonEncode(user));
+
+    var response = await http.put(
+        uri,
+        headers: {"Content-Type": "application/json", "Authorization":token},
+        body: jsonEncode(user) );
+
+    print(response.body);
   }
 }

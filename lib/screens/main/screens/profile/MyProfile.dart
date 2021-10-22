@@ -2,6 +2,7 @@ import 'package:faxina_ja_app/models/LoginToken.dart';
 import 'package:faxina_ja_app/models/User.dart';
 import 'package:faxina_ja_app/models/UserInfo.dart';
 import 'package:faxina_ja_app/services/ProfileService.dart';
+import 'package:faxina_ja_app/services/UserService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class _MyProfileState extends State<MyProfile> {
   TextEditingController emailController        = TextEditingController();
   TextEditingController documentoController    = TextEditingController();
   TextEditingController enderecoController     = TextEditingController();
+  TextEditingController enderecoNumeroController     = TextEditingController();
   TextEditingController cidadeController       = TextEditingController();
   TextEditingController estadoController       = TextEditingController();
   TextEditingController CEPController          = TextEditingController();
@@ -40,7 +42,8 @@ class _MyProfileState extends State<MyProfile> {
           buildTextField("Nome Completo",userInfo.name , nomeCompletoController),
           buildTextField("Email",        userInfo.email, emailController),
           buildTextField("Documento",    userInfo.document, documentoController),
-          buildTextField("Endereço",     userInfo.address.street + ", "+ userInfo.address.number.toString(), enderecoController),
+          buildTextField("Endereço",     userInfo.address.street, enderecoController),
+          buildTextField("Numero",      userInfo.address.number.toString(), enderecoNumeroController),
           buildTextField("Cidade",       userInfo.address.city, cidadeController),
           buildTextField("Estado",       userInfo.address.state, estadoController),
           buildTextField("CEP",          userInfo.address.zipCode, CEPController),
@@ -63,7 +66,22 @@ class _MyProfileState extends State<MyProfile> {
                         borderRadius: BorderRadius.circular(20))),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                 User user = User(name: nomeCompletoController.text,
+                      document: documentoController.text,
+                      email: emailController.text,
+                      password: "",
+                      userType: "c",
+                      address: new Address(street: enderecoController.text,
+                                          number: int.parse(enderecoNumeroController.text),
+                                          city: cidadeController.text,
+                                          state: estadoController.text,
+                                          zipCode: CEPController.text,
+                                          region: "",
+                                          country: '') );
+                  UserService().updateUser(widget.token, user);
+                  Navigator.pop(context);
+                },
                 child: Text(
                   "SALVAR",
                   style: TextStyle(
@@ -104,7 +122,8 @@ class _MyProfileState extends State<MyProfile> {
                 nomeCompletoController.text = snapshot.data!.name;
                 emailController.text = snapshot.data!.email;
                 documentoController.text = snapshot.data!.document;
-                enderecoController.text = snapshot.data!.address.street + ", " + snapshot.data!.address.number.toString();
+                enderecoController.text = snapshot.data!.address.street;
+                enderecoNumeroController.text = snapshot.data!.address.number.toString();
                 cidadeController.text = snapshot.data!.address.city;
                 estadoController.text = snapshot.data!.address.state;
                 CEPController.text = snapshot.data!.address.zipCode;

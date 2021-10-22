@@ -1,5 +1,3 @@
-import 'package:faxina_ja_app/models/OrderRequest.dart';
-
 class UserInfo {
   UserInfo({
     required this.id,
@@ -29,7 +27,7 @@ class UserInfo {
   late final String email;
   late final String createdAt;
   late final String updatedAt;
-  late final Address address;
+  late final AddressInfo address;
 
   UserInfo.fromJson(Map<String, dynamic> json){
     id = json['_id'];
@@ -39,7 +37,7 @@ class UserInfo {
     email = json['email'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    address = Address.fromJson(json['address']);
+    address = AddressInfo.fromJson(json['address']);
   }
 
   Map<String, dynamic> toJson() {
@@ -58,8 +56,8 @@ class UserInfo {
 
 
 
-class Address {
-  Address({
+class AddressInfo {
+  AddressInfo({
     required this.street,
     required this.number,
     required this.city,
@@ -74,7 +72,7 @@ class Address {
   late final String zipCode;
   late final String region;
 
-  Address.fromJson(Map<String, dynamic> json){
+  AddressInfo.fromJson(Map<String, dynamic> json){
     street = json['street'];
     number = json['number'];
     city = json['city'];
