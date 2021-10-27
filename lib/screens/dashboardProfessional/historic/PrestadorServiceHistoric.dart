@@ -116,7 +116,7 @@ Widget listView(List<OrderResponse> orders) {
         trailing: Container(
           child: Text(order.status.toUpperCase(), style: TextStyle(
             fontFamily: 'Lalezar',
-            fontSize: 15,
+            fontSize: 14,
           ),)
         ),
         title: Column(

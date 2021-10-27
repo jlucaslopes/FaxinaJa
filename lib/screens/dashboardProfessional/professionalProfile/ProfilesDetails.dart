@@ -1,5 +1,7 @@
+import 'package:faxina_ja_app/models/User.dart';
 import 'package:faxina_ja_app/models/UserInfo.dart';
 import 'package:faxina_ja_app/services/ProfileService.dart';
+import 'package:faxina_ja_app/services/UserService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,15 @@ class ProfilesDetails extends StatefulWidget {
 class _ProfilesDetailsState extends State<ProfilesDetails> {
   bool isObscurePassword = true;
 
+  TextEditingController nomeCompletoController       = TextEditingController();
+  TextEditingController emailController              = TextEditingController();
+  TextEditingController documentoController          = TextEditingController();
+  TextEditingController enderecoController           = TextEditingController();
+  TextEditingController enderecoNumeroController     = TextEditingController();
+  TextEditingController cidadeController             = TextEditingController();
+  TextEditingController estadoController             = TextEditingController();
+  TextEditingController CEPController                = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +39,21 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
         automaticallyImplyLeading: false,
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        //height: MediaQuery.of(context).size.height,
         color: Color.fromRGBO(237, 205, 248, 100),
         padding: EdgeInsets.only(left: 15, top: 20, right: 15),
         child: FutureBuilder<UserInfo>(
           future: ProfileService().findUser(widget.token),
           builder: (context,snapshot){
             if (snapshot.connectionState == ConnectionState.done) {
+              nomeCompletoController.text = snapshot.data!.name;
+              emailController.text = snapshot.data!.email;
+              documentoController.text = snapshot.data!.document;
+              enderecoController.text = snapshot.data!.address.street;
+              enderecoNumeroController.text = snapshot.data!.address.number.toString();
+              cidadeController.text = snapshot.data!.address.city;
+              estadoController.text = snapshot.data!.address.state;
+              CEPController.text = snapshot.data!.address.zipCode;
               return buildSingle(snapshot.data!);
             }
             else {
@@ -48,7 +67,7 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
     );
   }
 
-  Widget buildSingle(UserInfo user){
+  Widget buildSingle(UserInfo userInfo){
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -56,13 +75,14 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
           SizedBox(
             height: 30,
           ),
-          buildTextField("Nome:", user.name, false),
-          buildTextField("Documento", user.document, false),
-          buildTextField("Email", user.email, false),
-          buildTextField("Endereço:", user.address.street + ", " + user.address.number.toString(), false),
-          buildTextField("CEP:", user.address.zipCode, false),
-          buildTextField("Cidade:", user.address.city, false),
-          buildTextField("Estado:", user.address.state, false),
+          buildTextField("Nome Completo",userInfo.name , nomeCompletoController),
+          buildTextField("Email",        userInfo.email, emailController),
+          buildTextField("Documento",    userInfo.document, documentoController),
+          buildTextField("Endereço",     userInfo.address.street, enderecoController),
+          buildTextField("Numero",      userInfo.address.number.toString(), enderecoNumeroController),
+          buildTextField("Cidade",       userInfo.address.city, cidadeController),
+          buildTextField("Estado",       userInfo.address.state, estadoController),
+          buildTextField("CEP",          userInfo.address.zipCode, CEPController),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -83,7 +103,22 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
                         borderRadius: BorderRadius.circular(20))),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  User user = User(name: nomeCompletoController.text,
+                      document: documentoController.text,
+                      email: emailController.text,
+                      password: "",
+                      userType: "p",
+                      address: new Address(street: enderecoController.text,
+                          number: int.parse(enderecoNumeroController.text),
+                          city: cidadeController.text,
+                          state: estadoController.text,
+                          zipCode: CEPController.text,
+                          region: "",
+                          country: ''));
+                  UserService().updateUser(widget.token, user);
+                  Navigator.pop(context);
+                },
                 child: Text(
                   "SALVAR",
                   style: TextStyle(
@@ -103,28 +138,19 @@ class _ProfilesDetailsState extends State<ProfilesDetails> {
   }
 
   Widget buildTextField(
-      String labelText, String placeHolder, bool isPasswordTextField) {
+      String labelText, String placeHolder, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextField(
-        obscureText: isPasswordTextField ? isObscurePassword : false,
+        controller: controller,
         decoration: InputDecoration(
-          suffixIcon: isPasswordTextField
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isObscurePassword = !isObscurePassword;
-                    });
-                  },
-                  icon: Icon(Icons.remove_red_eye, color: Colors.grey),
-                )
-              : null,
           contentPadding: EdgeInsets.only(bottom: 5),
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: placeHolder,
           hintStyle: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+            color: Colors.grey,
+          ),
         ),
       ),
     );
