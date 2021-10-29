@@ -222,7 +222,7 @@ class _HistoricPageState extends State<HistoricPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Data da realização: ",
+                      "Data agendada: ",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,

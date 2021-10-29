@@ -100,6 +100,7 @@ class _SearchDemandPageState extends State<SearchDemandPage> {
   }
 
   Widget buildListTile(OrderResponse order) {
+    DateTime serviceDate = DateTime.parse(order.serviceDate);
     return Container(
       margin: EdgeInsets.all(7),
       decoration: BoxDecoration(
@@ -188,7 +189,7 @@ class _SearchDemandPageState extends State<SearchDemandPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Data da realização: ",
+                      "Data agendada: ",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -196,8 +197,8 @@ class _SearchDemandPageState extends State<SearchDemandPage> {
                       ),
                     ),
                   ),
-                  Text(
-                    "02/02/2021",
+                  Text(serviceDate.day.toString()+"/"
+                      +serviceDate.month.toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,

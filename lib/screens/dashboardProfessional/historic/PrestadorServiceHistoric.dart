@@ -103,6 +103,7 @@ Widget listView(List<OrderResponse> orders) {
 
   Widget buildListTile(OrderResponse order) {
 
+    DateTime serviceDate = DateTime.parse(order.serviceDate);
     return Container(
       margin: EdgeInsets.all(7),
       decoration: BoxDecoration(
@@ -187,7 +188,7 @@ Widget listView(List<OrderResponse> orders) {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Data da realização: ",
+                      "Data agendada: ",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -195,8 +196,8 @@ Widget listView(List<OrderResponse> orders) {
                       ),
                     ),
                   ),
-                  Text(
-                    "02/02/2021",
+                  Text(serviceDate.day.toString()+"/"
+                      +serviceDate.month.toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey,

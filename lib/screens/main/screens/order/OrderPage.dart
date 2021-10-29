@@ -22,7 +22,18 @@ class _OrderPageState extends State<OrderPage> {
     "Apenas Area Externa"
   ];
 
-  List formaPagamento = ["Cartão 1", "Dinheiro", "Pix"];
+  List teste =  [
+    "item 1",
+    "item 2",
+    "item 3",
+    "item 4"
+  ];
+  String testeEscolhido = "item 1";
+
+  List formaPagamento = ["Cartão Credito", "Dinheiro", "Pix"];
+
+  String tipoServicoEscolhido = "Faxina completa";
+  String formaPagamentoEscolhido = "Cartão Credito";
 
   DateTime _dateTime = DateTime.now();
 
@@ -34,8 +45,7 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    String tipoServicoEscolhido = tipoServico[0];
-    String formaPagamentoEscolhido = formaPagamento[0];
+
     var geladeiraWidget =
         ExtraWidget(img: "fridge", name: "Geladeira", isSelected: geladeira);
     var comprasWidget =
